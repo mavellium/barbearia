@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Scissors } from "lucide-react";
+import { Menu, X, Scissors, User, LogOut } from "lucide-react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { user, profile, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,14 +65,45 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
-            <Button 
-              onClick={() => scrollToSection("#servicos")}
-              className="btn-hero text-sm"
-            >
-              Agendar Agora
-            </Button>
+          {/* Auth Section - Desktop */}
+          <div className="hidden md:flex items-center space-x-4">
+            {user ? (
+              <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2">
+                  <User className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-foreground">
+                    Olá, {profile?.name || user.email}
+                  </span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={signOut}
+                  className="border-border/50 hover:border-accent/50"
+                >
+                  <LogOut className="w-4 h-4 mr-1" />
+                  Sair
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-3">
+                <Link to="/auth">
+                  <Button 
+                    variant="outline"
+                    className="border-border/50 hover:border-accent/50"
+                  >
+                    <User className="w-4 h-4 mr-2" />
+                    Entrar
+                  </Button>
+                </Link>
+                <Button 
+                  onClick={() => scrollToSection("#servicos")}
+                  className="btn-hero text-sm"
+                >
+                  Agendar Agora
+                </Button>
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -94,12 +128,44 @@ const Header = () => {
                   {item.label}
                 </button>
               ))}
-              <Button 
-                onClick={() => scrollToSection("#servicos")}
-                className="btn-hero w-full mt-4"
-              >
-                Agendar Agora
-              </Button>
+              
+              {user ? (
+                <div className="space-y-3 pt-4 border-t border-border/20">
+                  <div className="flex items-center space-x-2">
+                    <User className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-foreground">
+                      Olá, {profile?.name || user.email}
+                    </span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    onClick={signOut}
+                    className="w-full border-border/50 hover:border-accent/50"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sair
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-3 pt-4 border-t border-border/20">
+                  <Link to="/auth">
+                    <Button 
+                      variant="outline"
+                      className="w-full border-border/50 hover:border-accent/50"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <User className="w-4 h-4 mr-2" />
+                      Entrar / Cadastrar
+                    </Button>
+                  </Link>
+                  <Button 
+                    onClick={() => scrollToSection("#servicos")}
+                    className="btn-hero w-full"
+                  >
+                    Agendar Agora
+                  </Button>
+                </div>
+              )}
             </nav>
           </div>
         )}

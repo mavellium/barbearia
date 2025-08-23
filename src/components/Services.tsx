@@ -1,46 +1,67 @@
+import React, { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import AppointmentForm from "./AppointmentForm";
 import { Button } from "@/components/ui/button";
-import { Clock, Star, Scissors } from "lucide-react";
-import fadeImage from "@/assets/service-fade.jpg";
-import socialImage from "@/assets/service-social.jpg";
-import beardImage from "@/assets/service-beard.jpg";
+import { Badge } from "@/components/ui/badge";
+import { Scissors, Clock, Star, Calendar } from "lucide-react";
+
+interface Service {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  duration_minutes: number;
+  image_url: string;
+  popular: boolean;
+  active: boolean;
+}
 
 const Services = () => {
-  const services = [
-    {
-      id: 1,
-      name: "Degradê",
-      description: "Corte moderno com transição perfeita. Técnica refinada para um visual impecável.",
-      price: "R$ 35",
-      duration: "45 min",
-      image: fadeImage,
-      popular: true
-    },
-    {
-      id: 2,
-      name: "Social",
-      description: "Clássico e elegante para o dia a dia profissional. Sempre na medida certa.",
-      price: "R$ 30",
-      duration: "40 min",
-      image: socialImage,
-      popular: false
-    },
-    {
-      id: 3,
-      name: "Barba",
-      description: "Aparar e modelar com precisão. Produtos premium para hidratação e acabamento.",
-      price: "R$ 25",
-      duration: "30 min",
-      image: beardImage,
-      popular: false
-    }
-  ];
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isAppointmentFormOpen, setIsAppointmentFormOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState<Service | undefined>();
+  const { user } = useAuth();
 
-  const handleWhatsApp = (serviceName: string) => {
-    const message = `Oi! Gostaria de agendar um ${serviceName}. Quando você tem disponibilidade?`;
-    const phoneNumber = "5511999999999"; // Replace with actual WhatsApp number
-    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank");
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  const fetchServices = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('services')
+        .select('*')
+        .eq('active', true)
+        .order('popular', { ascending: false });
+
+      if (error) throw error;
+      setServices(data || []);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const handleSchedule = (service: Service) => {
+    setSelectedService(service);
+    setIsAppointmentFormOpen(true);
+  };
+
+  if (loading) {
+    return (
+      <section id="servicos" className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <div className="animate-spin w-8 h-8 border-2 border-accent border-t-transparent rounded-full mx-auto"></div>
+            <p className="text-muted-foreground mt-4">Carregando serviços...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="servicos" className="py-20 bg-background">
@@ -50,68 +71,77 @@ const Services = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-gold rounded-full mb-6">
             <Scissors className="w-8 h-8 text-accent-foreground" />
           </div>
-          <h2 className="text-3xl md:text-5xl font-heading font-bold text-foreground mb-4">
+          <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground mb-4">
             Nossos <span className="text-gold">Serviços</span>
           </h2>
-          <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
-            Cada corte é uma obra de arte. Escolha o seu estilo e experimente o melhor da barbearia moderna.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Técnicas modernas e produtos premium para realçar seu estilo único. 
+            Cada corte é uma obra de arte personalizada.
           </p>
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {services.map((service, index) => (
             <div
               key={service.id}
-              className={`card-luxury p-6 group hover:scale-105 transition-all duration-500 ${
-                index === 0 ? "animate-slide-in-left" : 
-                index === 1 ? "animate-fade-in animation-delay-200" : 
-                "animate-slide-in-right animation-delay-400"
-              }`}
+              className="card-luxury group hover:scale-105 transition-all duration-500 overflow-hidden animate-fade-in"
+              style={{ animationDelay: `${index * 150}ms` }}
             >
               {/* Service Image */}
-              <div className="relative overflow-hidden rounded-lg mb-6">
-                <img
-                  src={service.image}
-                  alt={`Serviço de ${service.name} - Lipe Cortes`}
-                  className="w-full h-48 object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                />
-                {service.popular && (
-                  <div className="absolute top-4 left-4 bg-gradient-gold px-3 py-1 rounded-full">
-                    <div className="flex items-center space-x-1">
-                      <Star className="w-4 h-4 text-accent-foreground" />
-                      <span className="text-xs font-semibold text-accent-foreground">Mais Pedido</span>
-                    </div>
+              <div className="relative h-64 overflow-hidden">
+                {service.image_url ? (
+                  <img
+                    src={service.image_url}
+                    alt={service.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-card flex items-center justify-center">
+                    <Scissors className="w-16 h-16 text-muted-foreground" />
                   </div>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                {/* Popular Badge */}
+                {service.popular && (
+                  <Badge className="absolute top-4 left-4 bg-accent text-accent-foreground border-0">
+                    <Star className="w-3 h-3 mr-1" />
+                    Mais Pedido
+                  </Badge>
+                )}
+
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
 
-              {/* Service Info */}
-              <div className="space-y-4">
-                <div className="flex justify-between items-start">
-                  <h3 className="text-xl font-heading font-semibold text-foreground">
+              {/* Service Content */}
+              <div className="p-6">
+                <div className="flex justify-between items-start mb-3">
+                  <h3 className="text-xl font-semibold text-foreground group-hover:text-gold transition-colors">
                     {service.name}
                   </h3>
                   <div className="text-right">
-                    <div className="text-2xl font-bold text-gold">{service.price}</div>
-                    <div className="flex items-center text-sm text-foreground/60">
-                      <Clock className="w-4 h-4 mr-1" />
-                      {service.duration}
-                    </div>
+                    <p className="text-lg font-bold text-accent">
+                      R$ {service.price.toFixed(2)}
+                    </p>
+                    <p className="text-sm text-muted-foreground flex items-center">
+                      <Clock className="w-3 h-3 mr-1" />
+                      {service.duration_minutes} min
+                    </p>
                   </div>
                 </div>
-
-                <p className="text-foreground/70 text-sm leading-relaxed">
+                
+                <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
                   {service.description}
                 </p>
-
+                
                 <Button 
-                  onClick={() => handleWhatsApp(service.name)}
-                  className="w-full btn-secondary group hover:btn-hero transition-all duration-300"
+                  onClick={() => handleSchedule(service)}
+                  className="w-full btn-hero group-hover:shadow-gold transition-all duration-300"
+                  disabled={!user}
                 >
-                  Agendar {service.name}
-                  <Scissors className="ml-2 w-4 h-4 group-hover:rotate-45 transition-transform duration-300" />
+                  <Calendar className="w-4 h-4 mr-2" />
+                  {user ? 'Agendar Agora' : 'Faça login para agendar'}
                 </Button>
               </div>
             </div>
@@ -119,23 +149,40 @@ const Services = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="text-center mt-16">
-          <div className="bg-gradient-to-r from-card to-muted/50 rounded-2xl p-8 border border-border/30">
-            <h3 className="text-2xl font-heading font-bold text-foreground mb-4">
-              Não encontrou o que procura?
-            </h3>
-            <p className="text-foreground/70 mb-6">
-              Entre em contato e vamos criar o visual perfeito para você.
+        <div className="text-center bg-gradient-card rounded-2xl p-8 border border-border/50">
+          <h3 className="text-2xl font-heading font-bold text-foreground mb-4">
+            Precisa de um atendimento personalizado?
+          </h3>
+          <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+            Cada cliente é único. Entre em contato conosco para discutir suas necessidades específicas 
+            e criar o visual perfeito para você.
+          </p>
+          <Button 
+            onClick={() => setIsAppointmentFormOpen(true)}
+            className="btn-hero"
+            disabled={!user}
+          >
+            <Calendar className="w-4 h-4 mr-2" />
+            {user ? 'Agendar Consulta' : 'Faça login para agendar'}
+          </Button>
+          
+          {!user && (
+            <p className="text-sm text-muted-foreground mt-3">
+              Faça login ou cadastre-se para agendar seus serviços
             </p>
-            <Button 
-              onClick={() => handleWhatsApp("um atendimento personalizado")}
-              className="btn-hero"
-            >
-              Falar no WhatsApp
-            </Button>
-          </div>
+          )}
         </div>
       </div>
+
+      {/* Appointment Form Modal */}
+      <AppointmentForm
+        isOpen={isAppointmentFormOpen}
+        onClose={() => {
+          setIsAppointmentFormOpen(false);
+          setSelectedService(undefined);
+        }}
+        selectedService={selectedService}
+      />
     </section>
   );
 };
