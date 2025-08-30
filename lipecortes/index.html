@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lipe Cortes | Barbearia Premium</title>
+    <link rel="stylesheet" href="styles.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="body-container">
+    <div class="main-wrapper">
+        <header id="header" class="main-header">
+            <div class="header-container">
+                <div class="header-content">
+                    <div class="logo-container">
+                        <div class="logo-icon-wrapper">
+                            <i data-lucide="scissors" class="logo-icon"></i>
+                        </div>
+                        <span class="logo-text">Lipe Cortes</span>
+                    </div>
+
+                    <nav class="desktop-nav">
+                        <a href="#inicio" class="nav-link">Início</a>
+                        <a href="#servicos" class="nav-link">Serviços</a>
+                        <a href="#produtos" class="nav-link">Produtos</a>
+                        <a href="#sobre" class="nav-link">Sobre</a>
+                        <a href="#contato" class="nav-link">Contato</a>
+                    </nav>
+
+                    <div class="desktop-auth">
+                        <a href="auth.html">
+                            <button class="btn-secondary">
+                                <i data-lucide="user" class="btn-icon"></i>
+                                Entrar
+                            </button>
+                        </a>
+                        <a href="#servicos">
+                            <button class="btn-hero btn-hero--sm">
+                                Agendar Agora
+                            </button>
+                        </a>
+                    </div>
+
+                    <button id="mobile-menu-button" class="mobile-menu-toggle">
+                        <i data-lucide="menu" class="toggle-icon"></i>
+                    </button>
+                </div>
+
+                <div id="mobile-menu" class="mobile-menu hidden-menu">
+                    <nav class="mobile-nav-links">
+                        <a href="#inicio" class="mobile-nav-link">Início</a>
+                        <a href="#servicos" class="mobile-nav-link">Serviços</a>
+                        <a href="#produtos" class="mobile-nav-link">Produtos</a>
+                        <a href="#sobre" class="mobile-nav-link">Sobre</a>
+                        <a href="#contato" class="mobile-nav-link">Contato</a>
+                        <div class="mobile-auth-links">
+                            <a href="auth.html">
+                                <button class="btn-secondary btn-full-width">
+                                    <i data-lucide="user" class="btn-icon"></i>
+                                    Entrar / Cadastrar
+                                </button>
+                            </a>
+                            <a href="#servicos">
+                                <button class="btn-hero btn-full-width">
+                                    Agendar Agora
+                                </button>
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section id="inicio" class="hero-section">
+                <div class="hero-background">
+                    <img src="./assets/hero-barbershop.jpg" alt="Barbeiro profissional cortando cabelo com precisão"
+                        class="hero-image" />
+                    <div class="hero-overlay-dark"></div>
+                    <div class="hero-overlay-bottom"></div>
+                </div>
+                <div class="hero-content">
+                    <div class="hero-headline-container">
+                        <h1 class="hero-headline">
+                            <span class="text-block">Corte na</span>
+                            <span class="text-gold text-shadow-luxury">régua.</span>
+                            <span class="text-block">Estilo garantido.</span>
+                        </h1>
+                        <p class="hero-subtitle">
+                            Profissionalismo e estilo em cada corte. A melhor experiência em barbearia premium da
+                            cidade.
+                        </p>
+                        <div class="hero-cta-buttons">
+                            <button class="btn-hero"
+                                onclick="document.getElementById('servicos').scrollIntoView({behavior: 'smooth'})">
+                                Agendar Agora
+                                <i data-lucide="arrow-right" class="btn-icon--right"></i>
+                            </button>
+                            <button class="btn-secondary"
+                                onclick="document.getElementById('sobre').scrollIntoView({behavior: 'smooth'})">
+                                <i data-lucide="play" class="btn-icon--left"></i>
+                                Conheça o Espaço
+                            </button>
+                        </div>
+                        <div class="hero-indicators">
+                            <div class="indicator-item">
+                                <div class="indicator-dot"></div>
+                                <span>+500 clientes satisfeitos</span>
+                            </div>
+                            <div class="indicator-item">
+                                <div class="indicator-dot"></div>
+                                <span>5 anos de experiência</span>
+                            </div>
+                            <div class="indicator-item">
+                                <div class="indicator-dot"></div>
+                                <span>Produtos premium</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-bottom-gradient"></div>
+                <div class="scroll-indicator">
+                    <div class="scroll-dot-wrapper">
+                        <div class="scroll-dot"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="servicos" class="section-services">
+                <div class="section-container">
+                    <div class="section-header">
+                        <div class="icon-header-wrapper">
+                            <i data-lucide="scissors" class="icon-header"></i>
+                        </div>
+                        <h2 class="section-title">
+                            Nossos <span class="text-gold">Serviços</span>
+                        </h2>
+                        <p class="section-subtitle">
+                            Técnicas modernas e produtos premium para realçar seu estilo único. Cada corte é uma obra de
+                            arte personalizada.
+                        </p>
+                    </div>
+
+                    <div class="services-grid">
+                        <!-- <div class="service-card animate-fade-in" style="animation-delay: 0ms;">
+                            <div class="service-image-wrapper">
+                                <img src="https://i.ibb.co/D8g0q9y/service-fade.jpg" alt="Corte Degradê" class="service-image" />
+                                <span class="badge badge-popular">
+                                    <i data-lucide="star" class="badge-icon"></i>Mais Pedido
+                                </span>
+                                <div class="service-overlay"></div>
+                            </div>
+                            <div class="service-content">
+                                <div class="service-details">
+                                    <h3 class="service-title">Degradê</h3>
+                                    <div class="service-pricing">
+                                        <p class="service-price">R$ 35,00</p>
+                                        <p class="service-duration">
+                                            <i data-lucide="clock" class="service-icon"></i>45 min
+                                        </p>
+                                    </div>
+                                </div>
+                                <p class="service-description">
+                                    Transição suave e perfeita entre o topo e as laterais, um clássico moderno.
+                                </p>
+                                <button class="btn-hero btn-full-width" onclick="showAppointmentModal('Degradê')">
+                                    <i data-lucide="calendar" class="btn-icon"></i>
+                                    Agendar Agora
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="service-card animate-fade-in" style="animation-delay: 150ms;">
+                            <div class="service-image-wrapper">
+                                <img src="https://i.ibb.co/Q8F7yK2/service-social.jpg" alt="Corte Social" class="service-image" />
+                                <div class="service-overlay"></div>
+                            </div>
+                            <div class="service-content">
+                                <div class="service-details">
+                                    <h3 class="service-title">Social</h3>
+                                    <div class="service-pricing">
+                                        <p class="service-price">R$ 30,00</p>
+                                        <p class="service-duration">
+                                            <i data-lucide="clock" class="service-icon"></i>30 min
+                                        </p>
+                                    </div>
+                                </div>
+                                <p class="service-description">
+                                    O corte clássico e atemporal, perfeito para qualquer ocasião.
+                                </p>
+                                <button class="btn-hero btn-full-width" onclick="showAppointmentModal('Social')">
+                                    <i data-lucide="calendar" class="btn-icon"></i>
+                                    Agendar Agora
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="service-card animate-fade-in" style="animation-delay: 300ms;">
+                            <div class="service-image-wrapper">
+                                <img src="https://i.ibb.co/Q6yJ2jT/service-beard.jpg" alt="Barba" class="service-image" />
+                                <div class="service-overlay"></div>
+                            </div>
+                            <div class="service-content">
+                                <div class="service-details">
+                                    <h3 class="service-title">Barba</h3>
+                                    <div class="service-pricing">
+                                        <p class="service-price">R$ 25,00</p>
+                                        <p class="service-duration">
+                                            <i data-lucide="clock" class="service-icon"></i>25 min
+                                        </p>
+                                    </div>
+                                </div>
+                                <p class="service-description">
+                                    Cuidado especial para uma barba bem alinhada e cheia de estilo.
+                                </p>
+                                <button class="btn-hero btn-full-width" onclick="showAppointmentModal('Barba')">
+                                    <i data-lucide="calendar" class="btn-icon"></i>
+                                    Agendar Agora
+                                </button>
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <div class="cta-banner">
+                        <h3 class="cta-title">Precisa de um atendimento personalizado?</h3>
+                        <p class="cta-description">
+                            Cada cliente é único. Entre em contato conosco para discutir suas necessidades específicas e
+                            criar o visual perfeito para você.
+                        </p>
+                        <button class="btn-hero" onclick="showAppointmentModal()">
+                            <i data-lucide="calendar" class="btn-icon"></i>
+                            Agendar Consulta
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="produtos" class="section-products">
+                <div class="section-container">
+                    <div class="section-header">
+                        <div class="icon-header-wrapper">
+                            <i data-lucide="shopping-bag" class="icon-header"></i>
+                        </div>
+                        <h2 class="section-title">
+                            Nossos <span class="text-gold">Produtos</span>
+                        </h2>
+                        <p class="section-subtitle">
+                            Produtos premium selecionados especialmente para o cuidado masculino. Qualidade profissional
+                            para usar em casa.
+                        </p>
+                    </div>
+
+                    <!-- Grid de produtos vai ser preenchida dinamicamente -->
+                    <div class="products-grid" id="productsGrid"></div>
+
+                    <div class="cta-banner">
+                        <h3 class="cta-title">Delivery e Retirada na Loja</h3>
+                        <div class="delivery-info">
+                            <div class="info-item">
+                                <h4 class="info-title">
+                                    <i data-lucide="shopping-bag" class="info-icon"></i>
+                                    Entrega
+                                </h4>
+                                <ul class="info-list">
+                                    <li>• Entrega rápida em toda a região</li>
+                                    <li>• Frete grátis para compras acima de R$ 80</li>
+                                    <li>• Embalagem premium para presente</li>
+                                </ul>
+                            </div>
+                            <div class="info-item">
+                                <h4 class="info-title">
+                                    <i data-lucide="package" class="info-icon"></i>
+                                    Retirada
+                                </h4>
+                                <ul class="info-list">
+                                    <li>• Retire na loja sem custo adicional</li>
+                                    <li>• Horário: Segunda a Sábado, 9h às 19h</li>
+                                    <li>• Produto reservado por até 3 dias</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sobre" class="section-about">
+                <div class="section-container">
+                    <div class="about-content">
+                        <div class="about-text-content">
+                            <div class="icon-header-wrapper">
+                                <i data-lucide="scissors" class="icon-header"></i>
+                            </div>
+                            <h2 class="section-title">
+                                Sobre o <span class="text-gold">Lipe Cortes</span>
+                            </h2>
+                            <p class="section-subtitle">
+                                Mais que uma barbearia, é um espaço onde estilo e personalidade se encontram.
+                            </p>
+                            <div class="about-story">
+                                <p class="story-paragraph">
+                                    Há 5 anos, o Lipe Cortes nasceu da paixão por criar não apenas cortes, mas
+                                    experiências únicas. Com técnicas modernas e um olhar atento aos detalhes,
+                                    transformamos cada visita em um momento de cuidado pessoal e renovação.
+                                </p>
+                                <p class="story-paragraph">
+                                    Nossa filosofia é simples: <strong class="text-gold">profissionalismo +
+                                        estilo</strong>. Cada cliente recebe atenção personalizada, garantindo que saia
+                                    daqui não apenas com um novo visual, mas com mais confiança.
+                                </p>
+                            </div>
+                            <div class="about-stats-grid">
+                                <div class="stat-item animate-fade-in animation-delay-0">
+                                    <div class="stat-icon-wrapper">
+                                        <i data-lucide="users" class="stat-icon"></i>
+                                    </div>
+                                    <div class="stat-number">500+</div>
+                                    <div class="stat-label">Clientes Satisfeitos</div>
+                                    <div class="stat-description">Cada cliente é único, cada corte é especial</div>
+                                </div>
+                                <div class="stat-item animate-fade-in animation-delay-200">
+                                    <div class="stat-icon-wrapper">
+                                        <i data-lucide="clock" class="stat-icon"></i>
+                                    </div>
+                                    <div class="stat-number">5</div>
+                                    <div class="stat-label">Anos de Experiência</div>
+                                    <div class="stat-description">Aperfeiçoando técnicas e criando estilos</div>
+                                </div>
+                                <div class="stat-item animate-fade-in animation-delay-400">
+                                    <div class="stat-icon-wrapper">
+                                        <i data-lucide="award" class="stat-icon"></i>
+                                    </div>
+                                    <div class="stat-number">100%</div>
+                                    <div class="stat-label">Qualidade Garantida</div>
+                                    <div class="stat-description">Compromisso com a excelência em cada serviço</div>
+                                </div>
+                            </div>
+                            <div class="about-cta-container">
+                                <button class="btn-hero"
+                                    onclick="document.getElementById('contato').scrollIntoView({behavior: 'smooth'})">
+                                    Conheça Nosso Espaço
+                                </button>
+                            </div>
+                        </div>
+                        <div class="about-image-wrapper">
+                            <div class="about-image-inner">
+                                <img src="https://i.ibb.co/6P6X2f1/barbershop-interior.jpg"
+                                    alt="Interior moderno da barbearia Lipe Cortes com cadeiras de couro e ambiente luxuoso"
+                                    class="about-image" />
+                                <div class="image-overlay-top"></div>
+                                <div class="image-overlay-sides"></div>
+                            </div>
+                            <div class="floating-elements floating-gold"></div>
+                            <div class="floating-elements floating-accent"></div>
+                            <div class="about-quote-box">
+                                <blockquote class="about-quote-text">
+                                    "Cada corte é uma obra de arte. Cada cliente, uma nova inspiração."
+                                </blockquote>
+                                <cite class="about-quote-author">- Lipe Cortes, Fundador</cite>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contato" class="section-contact">
+                <div class="section-container">
+                    <div class="section-header">
+                        <div class="icon-header-wrapper">
+                            <i data-lucide="message-circle" class="icon-header"></i>
+                        </div>
+                        <h2 class="section-title">
+                            Entre em <span class="text-gold">Contato</span>
+                        </h2>
+                        <p class="section-subtitle">
+                            Pronto para transformar seu visual? Entre em contato e agende seu horário.
+                        </p>
+                    </div>
+
+                    <div class="contact-content">
+                        <div class="contact-info-wrapper">
+                            <div class="contact-info-list">
+                                <div class="contact-info-item animate-fade-in animation-delay-0">
+                                    <div class="contact-icon-wrapper">
+                                        <i data-lucide="map-pin" class="contact-icon"></i>
+                                    </div>
+                                    <div class="contact-text-content">
+                                        <div class="contact-label">Endereço</div>
+                                        <div class="contact-value">Rua das Flores, 123 - Centro</div>
+                                        <div class="contact-subvalue">São Paulo, SP - CEP: 01234-567</div>
+                                    </div>
+                                </div>
+                                <div class="contact-info-item contact-link animate-fade-in animation-delay-200">
+                                    <div class="contact-icon-wrapper">
+                                        <i data-lucide="phone" class="contact-icon"></i>
+                                    </div>
+                                    <div class="contact-text-content">
+                                        <div class="contact-label">Telefone</div>
+                                        <div class="contact-value">(11) 99999-9999</div>
+                                        <div class="contact-subvalue">WhatsApp disponível</div>
+                                    </div>
+                                </div>
+                                <div class="contact-info-item animate-fade-in animation-delay-400">
+                                    <div class="contact-icon-wrapper">
+                                        <i data-lucide="clock" class="contact-icon"></i>
+                                    </div>
+                                    <div class="contact-text-content">
+                                        <div class="contact-label">Funcionamento</div>
+                                        <div class="contact-value">Seg - Sex: 9h às 18h</div>
+                                        <div class="contact-subvalue">Sáb: 8h às 16h | Dom: Fechado</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="social-links-wrapper">
+                                <h3 class="social-title">Nos siga nas redes sociais</h3>
+                                <div class="social-links">
+                                    <a href="https://instagram.com/lipecortes" target="_blank"
+                                        class="social-btn social-btn--instagram">
+                                        <i data-lucide="instagram" class="social-icon"></i>
+                                        @lipecortes
+                                    </a>
+                                    <a href="https://wa.me/5511999999999" target="_blank"
+                                        class="social-btn social-btn--whatsapp">
+                                        <i data-lucide="message-circle" class="social-icon"></i>
+                                        WhatsApp
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-map-wrapper">
+                            <div class="contact-map-container">
+                                <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.3992226257523!2d-46.63473468502263!3d-23.5505200846875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce5a2d6b3c2a3b%3A0x63a35a51c4a005c!2sRua%20das%20Flores%2C%20123%20-%20Centro%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2001019-000%2C%20Brasil!5e0!3m2!1spt-BR!2sbr!4v1625445678901!5m2!1spt-BR!2sbr"
+                                    class="contact-map" title="Localização da Barbearia Lipe Cortes"></iframe>
+                                <div class="map-overlay"></div>
+                            </div>
+                            <div class="contact-cta-card">
+                                <h3 class="contact-cta-title">Agende já seu horário!</h3>
+                                <p class="contact-cta-text">
+                                    Atendimento rápido pelo WhatsApp. Confirme sua disponibilidade em segundos.
+                                </p>
+                                <a href="https://wa.me/5511999999999?text=Oi!%20Gostaria%20de%20agendar%20um%20horário.%20Quando%20você%20tem%20disponibilidade%3F"
+                                    target="_blank" class="btn-hero btn-full-width btn-hero--lg">
+                                    <i data-lucide="message-circle" class="btn-icon"></i>
+                                    Falar no WhatsApp
+                                </a>
+                            </div>
+                            <div class="business-hours-card">
+                                <div class="business-hours-header">
+                                    <i data-lucide="clock" class="hours-icon"></i>
+                                    <h4 class="hours-title">Horário de Funcionamento</h4>
+                                </div>
+                                <div class="hours-list">
+                                    <div class="hours-item">
+                                        <span class="day-text">Segunda - Sexta</span>
+                                        <span class="hour-text">9h às 18h</span>
+                                    </div>
+                                    <div class="hours-item">
+                                        <span class="day-text">Sábado</span>
+                                        <span class="hour-text">8h às 16h</span>
+                                    </div>
+                                    <div class="hours-item">
+                                        <span class="day-text">Domingo</span>
+                                        <span class="hour-text hours-closed">Fechado</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="main-footer">
+            <div class="footer-container">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <div class="logo-container">
+                            <div class="logo-icon-wrapper">
+                                <i data-lucide="scissors" class="logo-icon"></i>
+                            </div>
+                            <span class="logo-text">Lipe Cortes</span>
+                        </div>
+                        <p class="brand-description">
+                            Mais que uma barbearia, um espaço onde estilo e personalidade se encontram. Profissionalismo
+                            e qualidade em cada corte.
+                        </p>
+                        <div class="social-footer-links">
+                            <a href="https://instagram.com/lipecortes" target="_blank" rel="noopener noreferrer"
+                                class="social-link-item">
+                                <i data-lucide="instagram" class="social-link-icon"></i>
+                            </a>
+                            <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer"
+                                class="social-link-item">
+                                <i data-lucide="message-circle" class="social-link-icon"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="footer-links-section">
+                        <h3 class="section-title-footer">Navegação</h3>
+                        <ul class="link-list">
+                            <li><a href="#inicio" class="link-item">Início</a></li>
+                            <li><a href="#servicos" class="link-item">Serviços</a></li>
+                            <li><a href="#produtos" class="link-item">Produtos</a></li>
+                            <li><a href="#sobre" class="link-item">Sobre</a></li>
+                            <li><a href="#contato" class="link-item">Contato</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links-section">
+                        <h3 class="section-title-footer">Serviços</h3>
+                        <ul class="service-list">
+                            <li class="service-list-item"><span>Degradê</span><span class="service-price">R$ 35</span>
+                            </li>
+                            <li class="service-list-item"><span>Social</span><span class="service-price">R$ 30</span>
+                            </li>
+                            <li class="service-list-item"><span>Barba</span><span class="service-price">R$ 25</span>
+                            </li>
+                        </ul>
+                        <a href="#servicos" class="more-link">Ver todos os serviços →</a>
+                    </div>
+                    <div class="footer-contact-section">
+                        <h3 class="section-title-footer">Contato</h3>
+                        <div class="contact-info-footer">
+                            <div class="contact-info-item-footer">
+                                <i data-lucide="map-pin" class="contact-icon-footer"></i>
+                                <div>
+                                    <div class="contact-value-footer">Rua das Flores, 123</div>
+                                    <div class="contact-subvalue-footer">Centro - São Paulo, SP</div>
+                                </div>
+                            </div>
+                            <div class="contact-info-item-footer">
+                                <i data-lucide="message-circle" class="contact-icon-footer"></i>
+                                <div>
+                                    <div class="contact-value-footer">(11) 99999-9999</div>
+                                    <div class="contact-subvalue-footer">WhatsApp disponível</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hours-card-footer">
+                            <div class="hours-text">Funcionamento:</div>
+                            <div class="hours-details-footer">
+                                <div class="hours-item-footer"><span>Seg - Sex</span><span class="hours-value">9h -
+                                        18h</span></div>
+                                <div class="hours-item-footer"><span>Sábado</span><span class="hours-value">8h -
+                                        16h</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom-bar">
+                <div class="bottom-bar-container">
+                    <div class="copyright-text">
+                        <p>© 2025 Lipe Cortes. Todos os direitos reservados.</p>
+                    </div>
+                    <div class="developer-info">
+                        <span>Desenvolvido com</span>
+                        <div class="dot-pulse"></div>
+                        <span>e dedicação</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+    <script type="module" src="./Service/servicos.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

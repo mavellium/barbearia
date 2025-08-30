@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lipe Cortes | Entrar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gradient-hero flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-md">
+        <a href="index.html" class="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            Voltar ao início
+        </a>
+        <div class="card-luxury p-8 rounded-lg">
+            <div class="space-y-4 text-center">
+                <div class="mx-auto w-12 h-12 bg-accent rounded-full flex items-center justify-center">
+                    <i data-lucide="scissors" class="w-6 h-6 text-accent-foreground"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl text-gold font-bold">Lipe Cortes</h1>
+                    <p class="text-muted-foreground">Acesse sua conta ou crie uma nova</p>
+                </div>
+            </div>
+            <div class="mt-6">
+                <div class="flex justify-center mb-6">
+                    <button id="login-tab" class="px-4 py-2 text-foreground font-semibold rounded-t-lg bg-accent text-accent-foreground">Entrar</button>
+                    <button id="signup-tab" class="px-4 py-2 text-foreground/70 font-semibold rounded-t-lg">Cadastrar</button>
+                </div>
+                <div id="login-content">
+                    <form id="login-form" class="space-y-4">
+                        <div class="space-y-2">
+                            <label for="login-email" class="text-foreground">Email</label>
+                            <input type="email" id="login-email" placeholder="seu@email.com" class="input" required>
+                        </div>
+                        <div class="space-y-2">
+                            <label for="login-password" class="text-foreground">Senha</label>
+                            <input type="password" id="login-password" placeholder="••••••••" class="input" required minlength="6">
+                        </div>
+                        <button type="submit" class="btn-hero w-full">Entrar</button>
+                        <p class="text-sm text-destructive mt-2 hidden">Email ou senha incorretos.</p>
+                    </form>
+                </div>
+                <div id="signup-content" class="hidden">
+                    <form id="signup-form" class="space-y-4">
+                        <div class="space-y-2">
+                            <label for="signup-name" class="text-foreground">Nome completo</label>
+                            <input type="text" id="signup-name" placeholder="Seu nome completo" class="input" required minlength="2">
+                        </div>
+                        <div class="space-y-2">
+                            <label for="signup-email" class="text-foreground">Email</label>
+                            <input type="email" id="signup-email" placeholder="seu@email.com" class="input" required>
+                        </div>
+                        <div class="space-y-2">
+                            <label for="signup-password" class="text-foreground">Senha</label>
+                            <input type="password" id="signup-password" placeholder="••••••••" class="input" required minlength="6">
+                        </div>
+                        <div class="space-y-2">
+                            <label for="signup-confirm-password" class="text-foreground">Confirmar senha</label>
+                            <input type="password" id="signup-confirm-password" placeholder="••••••••" class="input" required>
+                        </div>
+                        <button type="submit" class="btn-hero w-full">Criar conta</button>
+                        <p class="text-sm text-destructive mt-2 hidden">As senhas não coincidem.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="auth.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
