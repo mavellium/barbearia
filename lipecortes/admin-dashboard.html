@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard do Administrador</title>
+  <link rel="stylesheet" href="admin-dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="layout">
+
+    <!-- Título -->
+    <h1 class="page-title">Dashboard do Administrador</h1>
+
+    <!-- Gráficos (mock) -->
+    <section class="charts">
+      <div class="chart-card">[Gráfico de Agendamentos]</div>
+      <div class="chart-card">[Gráfico de Serviços]</div>
+    </section>
+
+    <!-- Agendamentos -->
+    <section class="section">
+      <h2>Agendamentos</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Serviços</th>
+              <th>Status</th>
+              <th>Ações</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>João Silva</td>
+              <td>Corte, Barba</td>
+              <td><span class="badge badge-pendente">PENDENTE</span></td>
+              <td>
+                <button class="btn-link orange">Confirmar</button>
+                <button class="btn-link purple">Alterar Data</button>
+              </td>
+              <td>15/09/2025 14:00</td>
+            </tr>
+            <tr>
+              <td>Maria Souza</td>
+              <td>Coloração</td>
+              <td><span class="badge badge-confirmado">CONFIRMADO</span></td>
+              <td>
+                <button class="btn-link purple">Alterar Data</button>
+              </td>
+              <td>16/09/2025 09:30</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Serviços -->
+    <section class="section">
+      <h2>Gerenciamento de Serviços</h2>
+
+      <!-- Novo Serviço -->
+      <div class="new-service">
+        <input type="text" placeholder="Nome do serviço">
+        <input type="text" placeholder="Descrição">
+        <input type="number" placeholder="Preço">
+        <button class="btn orange">Adicionar Serviço</button>
+      </div>
+
+      <!-- Lista de Serviços -->
+      <div class="services-list">
+        <div class="service-item">
+          <div>
+            <h3>Corte Masculino</h3>
+            <p>Corte de cabelo masculino com tesoura e máquina</p>
+          </div>
+          <div class="service-actions">
+            <span class="price">R$ 50,00</span>
+            <button class="btn-link purple">Editar</button>
+            <button class="btn-link red">Excluir</button>
+          </div>
+        </div>
+        <div class="service-item">
+          <div>
+            <h3>Coloração</h3>
+            <p>Aplicação de tintura profissional</p>
+          </div>
+          <div class="service-actions">
+            <span class="price">R$ 80,00</span>
+            <button class="btn-link purple">Editar</button>
+            <button class="btn-link red">Excluir</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>
