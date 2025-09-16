@@ -10,8 +10,11 @@
 <body>
   <div class="layout">
 
-    <!-- Título -->
-    <h1 class="page-title">Dashboard do Administrador</h1>
+    <!-- Header com logout -->
+    <header class="header">
+      <h1 class="page-title">Dashboard do Administrador</h1>
+      <button id="logout-btn" class="btn red">Sair</button>
+    </header>
 
     <!-- Gráficos (mock) -->
     <section class="charts">
@@ -33,26 +36,8 @@
               <th>Data</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>João Silva</td>
-              <td>Corte, Barba</td>
-              <td><span class="badge badge-pendente">PENDENTE</span></td>
-              <td>
-                <button class="btn-link orange">Confirmar</button>
-                <button class="btn-link purple">Alterar Data</button>
-              </td>
-              <td>15/09/2025 14:00</td>
-            </tr>
-            <tr>
-              <td>Maria Souza</td>
-              <td>Coloração</td>
-              <td><span class="badge badge-confirmado">CONFIRMADO</span></td>
-              <td>
-                <button class="btn-link purple">Alterar Data</button>
-              </td>
-              <td>16/09/2025 09:30</td>
-            </tr>
+          <tbody id="agendamentos-table-body">
+            <tr><td colspan="5">Carregando...</td></tr>
           </tbody>
         </table>
       </div>
@@ -64,39 +49,124 @@
 
       <!-- Novo Serviço -->
       <div class="new-service">
-        <input type="text" placeholder="Nome do serviço">
-        <input type="text" placeholder="Descrição">
-        <input type="number" placeholder="Preço">
+        <input type="text" placeholder="Nome do serviço" id="novo-servico-nome">
+        <input type="text" placeholder="Descrição" id="novo-servico-desc">
+        <input type="number" placeholder="Preço" id="novo-servico-preco">
         <button class="btn orange">Adicionar Serviço</button>
       </div>
 
       <!-- Lista de Serviços -->
-      <div class="services-list">
-        <div class="service-item">
-          <div>
-            <h3>Corte Masculino</h3>
-            <p>Corte de cabelo masculino com tesoura e máquina</p>
-          </div>
-          <div class="service-actions">
-            <span class="price">R$ 50,00</span>
-            <button class="btn-link purple">Editar</button>
-            <button class="btn-link red">Excluir</button>
-          </div>
-        </div>
-        <div class="service-item">
-          <div>
-            <h3>Coloração</h3>
-            <p>Aplicação de tintura profissional</p>
-          </div>
-          <div class="service-actions">
-            <span class="price">R$ 80,00</span>
-            <button class="btn-link purple">Editar</button>
-            <button class="btn-link red">Excluir</button>
-          </div>
-        </div>
+      <div class="services-list" id="services-list">
+        <!-- Será populada futuramente -->
       </div>
     </section>
 
   </div>
+
+  <script>
+    // === FUNÇÃO LOGOUT ===
+    document.getElementById("logout-btn").addEventListener("click", async () => {
+      try {
+        const res = await fetch("https://lipes-cortes.vercel.app/api/logout", { method: "POST" });
+        const data = await res.json();
+        alert(data.message || "Logout realizado");
+        window.location.href = "auth.html"; // volta para login
+      } catch (err) {
+        console.error("Erro no logout", err);
+      }
+    });
+
+    // === FUNÇÃO PARA LISTAR AGENDAMENTOS ===
+    async function carregarAgendamentos() {
+      const tbody = document.getElementById("agendamentos-table-body");
+      tbody.innerHTML = "<tr><td colspan='5'>Carregando...</td></tr>";
+
+      try {
+        const res = await fetch("https://lipes-cortes.vercel.app/api/agendamentos");
+        const agendamentos = await res.json();
+
+        if (!res.ok) {
+          tbody.innerHTML = `<tr><td colspan="5">${agendamentos.error || "Erro ao carregar"}</td></tr>`;
+          return;
+        }
+
+        if (agendamentos.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5">Nenhum agendamento encontrado.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = "";
+        agendamentos.forEach((ag) => {
+          const tr = document.createElement("tr");
+
+          const cliente = ag.user?.nome || "N/A";
+          const servicos = ag.servicos.map(s => s.servico.nome).join(", ");
+          const status = ag.status;
+          const data = new Date(ag.dataAgendamento).toLocaleString("pt-BR");
+
+          tr.innerHTML = `
+            <td>${cliente}</td>
+            <td>${servicos}</td>
+            <td><span class="badge ${status === "CONFIRMADO" ? "badge-confirmado" : "badge-pendente"}">${status}</span></td>
+            <td>
+              ${status === "PENDENTE" ? `<button class="btn-link orange" onclick="confirmarAgendamento('${ag.id}')">Confirmar</button>` : ""}
+              <button class="btn-link purple" onclick="alterarDataAgendamento('${ag.id}')">Alterar Data</button>
+            </td>
+            <td>${data}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error("Erro ao carregar agendamentos:", err);
+        tbody.innerHTML = `<tr><td colspan="5">Erro ao carregar dados</td></tr>`;
+      }
+    }
+
+    // === CONFIRMAR AGENDAMENTO ===
+    async function confirmarAgendamento(id) {
+      try {
+        const res = await fetch(`https://lipes-cortes.vercel.app/api/agendamentos/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: "CONFIRMADO" }),
+        });
+        if (res.ok) {
+          alert("Agendamento confirmado!");
+          carregarAgendamentos();
+        } else {
+          const data = await res.json();
+          alert(data.error || "Erro ao confirmar");
+        }
+      } catch (err) {
+        console.error("Erro ao confirmar agendamento:", err);
+      }
+    }
+
+    // === ALTERAR DATA ===
+    async function alterarDataAgendamento(id) {
+      const novaData = prompt("Digite a nova data e hora (ex: 2025-09-20 14:00)");
+      if (!novaData) return;
+
+      try {
+        const res = await fetch(`https://lipes-cortes.vercel.app/api/agendamentos/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ novaData }),
+        });
+        if (res.ok) {
+          alert("Data alterada!");
+          carregarAgendamentos();
+        } else {
+          const data = await res.json();
+          alert(data.error || "Erro ao alterar data");
+        }
+      } catch (err) {
+        console.error("Erro ao alterar data:", err);
+      }
+    }
+
+    // Inicializa a página
+    carregarAgendamentos();
+  </script>
 </body>
 </html>
