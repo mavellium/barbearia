@@ -91,8 +91,11 @@ loginForm.addEventListener("submit", async (event) => {
       return;
     }
 
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("role", data.user.role);
+    const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toUTCString();
+
+    // Define os cookies
+    document.cookie = `token=${data.token}; path=/; expires=${expires}; SameSite=Lax`;
+    document.cookie = `role=${data.user.role}; path=/; expires=${expires}; SameSite=Lax`;
 
     // Redireciona de acordo com o role
     console.log(data)

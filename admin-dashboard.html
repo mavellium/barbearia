@@ -1,11 +1,75 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dashboard do Administrador</title>
-  <link rel="stylesheet" href="admin-dashboard.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin-dashboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+  <style>
+  .chart-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .chart-box {
+    flex: 1 1 48%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    max-width: 400px;
+    width: 100%;
+  }
+
+  .chart-box h3 {
+    margin-bottom: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+  }
+
+  .week-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .week-controls button {
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .week-controls button:hover {
+    background-color: #005bb5;
+  }
+
+  .week-controls span {
+    font-weight: 500;
+    font-size: 16px;
+    color: #333;
+  }
+
+  @media (max-width: 768px) {
+    .chart-box {
+      flex: 1 1 100%;
+    }
+  }
+</style>
 </head>
 <body>
   <div class="layout">
@@ -17,10 +81,25 @@
     </header>
 
     <!-- Gráficos (mock) -->
-    <section class="charts">
-      <div class="chart-card">[Gráfico de Agendamentos]</div>
-      <div class="chart-card">[Gráfico de Serviços]</div>
-    </section>
+      <section class="charts">
+        <div class="week-controls">
+          <button id="prev-week">&lt; Semana Anterior</button>
+          <span id="week-range">--/--/---- - --/--/----</span>
+          <button id="next-week">Próxima Semana &gt;</button>
+        </div>
+
+        <div class="chart-content">
+          <div class="chart-box">
+            <h3>Agendamentos por Dia</h3>
+            <canvas id="chart-agendamentos" height="300"></canvas>
+          </div>
+
+          <div class="chart-box">
+            <h3>Faturamento por Dia (R$)</h3>
+            <canvas id="chart-faturamento" height="300"></canvas>
+          </div>
+        </div>
+      </section>
 
     <!-- Agendamentos -->
     <section class="section">
@@ -49,9 +128,9 @@
 
       <!-- Novo Serviço -->
       <div class="new-service">
-        <input type="text" placeholder="Nome do serviço" id="novo-servico-nome">
-        <input type="text" placeholder="Descrição" id="novo-servico-desc">
-        <input type="number" placeholder="Preço" id="novo-servico-preco">
+        <input type="text" placeholder="Nome do serviço" id="novo-servico-nome" />
+        <input type="text" placeholder="Descrição" id="novo-servico-desc" />
+        <input type="number" placeholder="Preço" id="novo-servico-preco" />
         <button class="btn orange">Adicionar Serviço</button>
       </div>
 
@@ -63,110 +142,9 @@
 
   </div>
 
-  <script>
-    // === FUNÇÃO LOGOUT ===
-    document.getElementById("logout-btn").addEventListener("click", async () => {
-      try {
-        const res = await fetch("https://lipes-cortes.vercel.app/api/logout", { method: "POST" });
-        const data = await res.json();
-        alert(data.message || "Logout realizado");
-        window.location.href = "auth.html"; // volta para login
-      } catch (err) {
-        console.error("Erro no logout", err);
-      }
-    });
-
-    // === FUNÇÃO PARA LISTAR AGENDAMENTOS ===
-    async function carregarAgendamentos() {
-      const tbody = document.getElementById("agendamentos-table-body");
-      tbody.innerHTML = "<tr><td colspan='5'>Carregando...</td></tr>";
-
-      try {
-        const res = await fetch("https://lipes-cortes.vercel.app/api/agendamentos");
-        const agendamentos = await res.json();
-
-        if (!res.ok) {
-          tbody.innerHTML = `<tr><td colspan="5">${agendamentos.error || "Erro ao carregar"}</td></tr>`;
-          return;
-        }
-
-        if (agendamentos.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5">Nenhum agendamento encontrado.</td></tr>`;
-          return;
-        }
-
-        tbody.innerHTML = "";
-        agendamentos.forEach((ag) => {
-          const tr = document.createElement("tr");
-
-          const cliente = ag.user?.nome || "N/A";
-          const servicos = ag.servicos.map(s => s.servico.nome).join(", ");
-          const status = ag.status;
-          const data = new Date(ag.dataAgendamento).toLocaleString("pt-BR");
-
-          tr.innerHTML = `
-            <td>${cliente}</td>
-            <td>${servicos}</td>
-            <td><span class="badge ${status === "CONFIRMADO" ? "badge-confirmado" : "badge-pendente"}">${status}</span></td>
-            <td>
-              ${status === "PENDENTE" ? `<button class="btn-link orange" onclick="confirmarAgendamento('${ag.id}')">Confirmar</button>` : ""}
-              <button class="btn-link purple" onclick="alterarDataAgendamento('${ag.id}')">Alterar Data</button>
-            </td>
-            <td>${data}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-      } catch (err) {
-        console.error("Erro ao carregar agendamentos:", err);
-        tbody.innerHTML = `<tr><td colspan="5">Erro ao carregar dados</td></tr>`;
-      }
-    }
-
-    // === CONFIRMAR AGENDAMENTO ===
-    async function confirmarAgendamento(id) {
-      try {
-        const res = await fetch(`https://lipes-cortes.vercel.app/api/agendamentos/${id}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status: "CONFIRMADO" }),
-        });
-        if (res.ok) {
-          alert("Agendamento confirmado!");
-          carregarAgendamentos();
-        } else {
-          const data = await res.json();
-          alert(data.error || "Erro ao confirmar");
-        }
-      } catch (err) {
-        console.error("Erro ao confirmar agendamento:", err);
-      }
-    }
-
-    // === ALTERAR DATA ===
-    async function alterarDataAgendamento(id) {
-      const novaData = prompt("Digite a nova data e hora (ex: 2025-09-20 14:00)");
-      if (!novaData) return;
-
-      try {
-        const res = await fetch(`https://lipes-cortes.vercel.app/api/agendamentos/${id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ novaData }),
-        });
-        if (res.ok) {
-          alert("Data alterada!");
-          carregarAgendamentos();
-        } else {
-          const data = await res.json();
-          alert(data.error || "Erro ao alterar data");
-        }
-      } catch (err) {
-        console.error("Erro ao alterar data:", err);
-      }
-    }
-
-    // Inicializa a página
-    carregarAgendamentos();
-  </script>
+  <script src="script-agendamento-admin.js"></script>
+  <script src="script-servicos-admin.js"></script>
+  <script src="logout.js"></script>
+  <script src="script-graficos-admin.js" defer></script>
 </body>
 </html>
