@@ -3,12 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard do Usuário</title>
+  <title>Dashboard do Cliente</title>
   <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
+
   <div class="layout">
-    <h1 class="page-title">Dashboard do Usuário</h1>
+    <header class="header">
+      <h1 class="page-title">Dashboard do Cliente</h1>
+      <button id="logout-btn" class="btn red">Sair</button>
+    </header>
 
     <!-- Tabela de Agendamentos -->
     <section class="section">
@@ -17,7 +21,7 @@
         <table id="appointments-table">
           <thead>
             <tr>
-              <th>Serviço</th>
+              <th>Serviços</th>
               <th>Data</th>
               <th>Status</th>
               <th>Ações</th>
@@ -34,8 +38,8 @@
     <section class="section">
       <h2>Agendar Novo Serviço</h2>
       <form id="schedule-form" class="form">
-        <label>Serviço:</label>
-        <select id="service-select" required></select>
+        <h3>Escolha os serviços:</h3>
+        <div id="service-checkboxes"></div>
 
         <label>Data:</label>
         <input type="datetime-local" id="appointment-date" required>
@@ -43,16 +47,9 @@
         <button type="submit" class="btn orange">Agendar</button>
       </form>
     </section>
-
-    <!-- Histórico -->
-    <section class="section">
-      <h2>Histórico</h2>
-      <ul id="history-list" class="history">
-        <!-- preenchido via JS -->
-      </ul>
-    </section>
   </div>
 
-  <script src="user-dashboard.js"></script>
+  <script src="script-dashboard.js"></script>
+  <script src="logout.js"></script>
 </body>
 </html>

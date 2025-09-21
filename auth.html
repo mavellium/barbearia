@@ -94,8 +94,10 @@ loginForm.addEventListener("submit", async (event) => {
     const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toUTCString();
 
     // Define os cookies
+    console.log(data)
     document.cookie = `token=${data.token}; path=/; expires=${expires}; SameSite=Lax`;
     document.cookie = `role=${data.user.role}; path=/; expires=${expires}; SameSite=Lax`;
+    document.cookie = `userId=${data.user.id}; path=/; expires=${expires}; SameSite=Lax`;
 
     // Redireciona de acordo com o role
     console.log(data)

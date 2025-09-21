@@ -11,7 +11,7 @@ body {
   margin: auto;
 }
 
-.header{
+.header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -21,7 +21,7 @@ body {
   margin-bottom: 50px;
 }
 
-.header #logout-btn{
+.header #logout-btn {
   background-color: #db0000;
   color: #fff;
   max-width: 125px;
@@ -325,7 +325,7 @@ tr:hover {
 }
 
 @media screen and (max-width: 500px) {
-  .servico-card{
+  .servico-card {
     flex-direction: column;
   }
 }
@@ -355,4 +355,138 @@ tr:hover {
 
 .servico-card .actions button:hover {
   background-color: #005bb5;
+}
+
+.chart-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.chart-box {
+  flex: 1 1 48%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  max-width: 400px;
+  width: 100%;
+}
+
+.chart-box h3 {
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+.week-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.week-controls button {
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.week-controls button:hover {
+  background-color: #005bb5;
+}
+
+.week-controls span {
+  font-weight: 500;
+  font-size: 16px;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .chart-box {
+    flex: 1 1 100%;
+  }
+}
+
+input,
+select,
+textarea {
+  width: auto;
+  padding: 10px 14px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #333;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #f97316;
+  /* laranja */
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+  background-color: #fff;
+}
+
+input[disabled],
+select[disabled],
+textarea[disabled] {
+  background-color: #f3f3f3;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+::placeholder {
+  color: #999;
+  opacity: 1;
+}
+
+/* Pequenos ajustes para selects */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0l5 6 5-6H0z' fill='%23999'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px 6px;
+  cursor: pointer;
+}
+
+/* Inputs em formulários compactos */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.new-product {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background: #f3e8ff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
