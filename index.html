@@ -132,12 +132,12 @@
             </section>
 
             <section id="servicos" class="section-services">
-                <div class="section-container">
+                <div class="section-container-servicos">
                     <div class="section-header">
                         <div class="icon-header-wrapper">
                             <i data-lucide="scissors" class="icon-header"></i>
                         </div>
-                        <h2 class="section-title">
+                        <h2 class="section-title-servicos">
                             Nossos <span class="text-gold">Serviços</span>
                         </h2>
                         <p class="section-subtitle">
@@ -146,85 +146,7 @@
                         </p>
                     </div>
 
-                    <div class="services-grid">
-                         <div class="service-card animate-fade-in" style="animation-delay: 0ms;">
-                            <div class="service-image-wrapper">
-                                <img src="https://i.ibb.co/D8g0q9y/service-fade.jpg" alt="Corte Degradê" class="service-image" />
-                                <span class="badge badge-popular">
-                                    <i data-lucide="star" class="badge-icon"></i>Mais Pedido
-                                </span>
-                                <div class="service-overlay"></div>
-                            </div>
-                            <div class="service-content">
-                                <div class="service-details">
-                                    <h3 class="service-title">Degradê</h3>
-                                    <div class="service-pricing">
-                                        <p class="service-price">R$ 35,00</p>
-                                        <p class="service-duration">
-                                            <i data-lucide="clock" class="service-icon"></i>45 min
-                                        </p>
-                                    </div>
-                                </div>
-                                <p class="service-description">
-                                    Transição suave e perfeita entre o topo e as laterais, um clássico moderno.
-                                </p>
-                                <button class="btn-hero btn-full-width" onclick="showAppointmentModal('Degradê')">
-                                    <i data-lucide="calendar" class="btn-icon"></i>
-                                    Agendar Agora
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="service-card animate-fade-in" style="animation-delay: 150ms;">
-                            <div class="service-image-wrapper">
-                                <img src="https://i.ibb.co/Q8F7yK2/service-social.jpg" alt="Corte Social" class="service-image" />
-                                <div class="service-overlay"></div>
-                            </div>
-                            <div class="service-content">
-                                <div class="service-details">
-                                    <h3 class="service-title">Social</h3>
-                                    <div class="service-pricing">
-                                        <p class="service-price">R$ 30,00</p>
-                                        <p class="service-duration">
-                                            <i data-lucide="clock" class="service-icon"></i>30 min
-                                        </p>
-                                    </div>
-                                </div>
-                                <p class="service-description">
-                                    O corte clássico e atemporal, perfeito para qualquer ocasião.
-                                </p>
-                                <button class="btn-hero btn-full-width" onclick="showAppointmentModal('Social')">
-                                    <i data-lucide="calendar" class="btn-icon"></i>
-                                    Agendar Agora
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="service-card animate-fade-in" style="animation-delay: 300ms;">
-                            <div class="service-image-wrapper">
-                                <img src="https://i.ibb.co/Q6yJ2jT/service-beard.jpg" alt="Barba" class="service-image" />
-                                <div class="service-overlay"></div>
-                            </div>
-                            <div class="service-content">
-                                <div class="service-details">
-                                    <h3 class="service-title">Barba</h3>
-                                    <div class="service-pricing">
-                                        <p class="service-price">R$ 25,00</p>
-                                        <p class="service-duration">
-                                            <i data-lucide="clock" class="service-icon"></i>25 min
-                                        </p>
-                                    </div>
-                                </div>
-                                <p class="service-description">
-                                    Cuidado especial para uma barba bem alinhada e cheia de estilo.
-                                </p>
-                                <button class="btn-hero btn-full-width" onclick="showAppointmentModal('Barba')">
-                                    <i data-lucide="calendar" class="btn-icon"></i>
-                                    Agendar Agora
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="servicesGrid" class="services-grid"></div>
 
                     <div class="cta-banner">
                         <h3 class="cta-title">Precisa de um atendimento personalizado?</h3>
@@ -241,13 +163,13 @@
             </section>
 
             <section id="produtos" class="section-products">
-                <div class="section-container">
+                <div class="section-container-products">
                     <div class="section-header">
                         <div class="icon-header-wrapper">
                             <i data-lucide="shopping-bag" class="icon-header"></i>
                         </div>
-                        <h2 class="section-title">
-                            Nossos <span class="text-gold">Produtos</span>
+                        <h2 class="section-title-produtos">
+                            Nossos <span class="text-gold"> Produtos</span>
                         </h2>
                         <p class="section-subtitle">
                             Produtos premium selecionados especialmente para o cuidado masculino. Qualidade profissional
@@ -256,7 +178,7 @@
                     </div>
 
                     <!-- Grid de produtos vai ser preenchida dinamicamente -->
-                    <div class="products-grid" id="productsGrid"></div>
+                    <div id="productsGrid" class="products-grid"></div>
 
                     <div class="cta-banner">
                         <h3 class="cta-title">Delivery e Retirada na Loja</h3>
@@ -289,7 +211,7 @@
             </section>
 
             <section id="sobre" class="section-about">
-                <div class="section-container">
+                <div class="section-container-sobre">
                     <div class="about-content">
                         <div class="about-text-content">
                             <div class="icon-header-wrapper">
@@ -312,6 +234,14 @@
                                         estilo</strong>. Cada cliente recebe atenção personalizada, garantindo que saia
                                     daqui não apenas com um novo visual, mas com mais confiança.
                                 </p>
+                            </div>
+                            
+                        </div>
+                        <div class="about-image-wrapper">
+                            <div class="about-image-inner">
+                                <img src="https://i.ibb.co/6P6X2f1/barbershop-interior.jpg"
+                                    alt="Interior moderno da barbearia Lipe Cortes com cadeiras de couro e ambiente luxuoso"
+                                    class="about-image" />
                             </div>
                             <div class="about-stats-grid">
                                 <div class="stat-item animate-fade-in animation-delay-0">
@@ -346,19 +276,6 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="about-image-wrapper">
-                            <div class="about-image-inner">
-                                <img src="https://i.ibb.co/6P6X2f1/barbershop-interior.jpg"
-                                    alt="Interior moderno da barbearia Lipe Cortes com cadeiras de couro e ambiente luxuoso"
-                                    class="about-image" />
-                            </div>
-                            <div class="about-quote-box">
-                                <blockquote class="about-quote-text">
-                                    "Cada corte é uma obra de arte. Cada cliente, uma nova inspiração."
-                                </blockquote>
-                                <cite class="about-quote-author">- Lipe Cortes, Fundador</cite>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -369,7 +286,7 @@
                         <div class="icon-header-wrapper">
                             <i data-lucide="message-circle" class="icon-header"></i>
                         </div>
-                        <h2 class="section-title">
+                        <h2 class="section-title-contato">
                             Entre em <span class="text-gold">Contato</span>
                         </h2>
                         <p class="section-subtitle">
