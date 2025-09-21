@@ -101,6 +101,12 @@ td {
   font-size: 0.9rem;
 }
 
+.acoes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 tr:hover {
   background: #737373;
 }
@@ -176,6 +182,39 @@ tr:hover {
   color: #b91c1c;
 }
 
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #EEBD2B;
+  padding: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon i {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.2px;
+}
+
+.btn-icon.blue i {
+  color: #007bff;
+}
+
+.btn-icon.red i {
+  color: #dc3545;
+}
+
+.btn-icon.green i {
+  color: #28a745;
+}
+
+.btn-icon.gray i {
+  color: #6c757d;
+}
+
 /* Serviços */
 .new-service {
   display: flex;
@@ -197,32 +236,38 @@ tr:hover {
 }
 
 .services-list {
-  background: #121212;
+  background: #202020;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.service-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
+.services-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.services-list th {
+  background: #444;
+  color: #EEBD2B;
+  font-size: 0.9rem;
+  text-align: left;
+  padding: 12px 16px;
+}
+
+.services-list td {
+  padding: 12px 16px;
   border-top: 1px solid #eee;
+  font-size: 0.9rem;
 }
 
-.service-item:first-child {
-  border-top: none;
+.services-list tr:hover {
+  background: #737373;
 }
 
-.service-item h3 {
-  color: #6b21a8;
-  font-size: 1rem;
-  margin-bottom: 4px;
-}
-
-.service-item p {
-  font-size: 0.85rem;
-  color: #666;
+.services-list .acoes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .price {
@@ -334,11 +379,9 @@ tr:hover {
 .servico-card {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
-  background: #202020;
+  background: #121212;
   padding: 10px;
-  border: 1px solid #121212;
-  border-radius: 6px;
+  border-top: 1px solid white;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -502,6 +545,11 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.preview-imagens {
+  width: 50px;
+  height: 50px;
 }
 
 .new-product {

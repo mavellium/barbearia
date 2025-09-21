@@ -38,13 +38,20 @@ async function carregarProdutos() {
             }
           </td>
           <td class="acoes">
-            <button class="btn small blue" onclick="editarProdutoInline(this, ${prod.id})">Editar</button>
-            <button class="btn small red" onclick="excluirProduto(${prod.id})">Excluir</button>
+            <button class="btn-icon blue" onclick="editarProdutoInline(this, ${prod.id})">
+              <i data-lucide="pencil"></i>
+            </button>
+            <button class="btn-icon red" onclick="excluirProduto(${prod.id})">
+              <i data-lucide="trash-2"></i>
+            </button>
           </td>
         `;
 
         tbody.appendChild(tr);
       });
+
+    // renderiza ícones após carregar
+    lucide.createIcons();
   } catch (err) {
     tbody.innerHTML = `<tr><td colspan='6' style="color:red">Erro: ${err.message}</td></tr>`;
   }
@@ -70,9 +77,15 @@ function editarProdutoInline(btn, id) {
 
   // Substitui botões
   tr.querySelector(".acoes").innerHTML = `
-    <button class="btn small green" onclick="salvarProdutoInline(this, ${id})">Salvar</button>
-    <button class="btn small gray" onclick="cancelarEdicaoInline(${id})">Cancelar</button>
+    <button class="btn-icon green" onclick="salvarProdutoInline(this, ${id})">
+      <i data-lucide="check"></i>
+    </button>
+    <button class="btn-icon gray" onclick="cancelarEdicaoInline(${id})">
+      <i data-lucide="x"></i>
+    </button>
   `;
+
+  lucide.createIcons();
 }
 
 // ================== SALVAR EDIÇÃO INLINE ==================
@@ -134,5 +147,6 @@ async function excluirProduto(id) {
 }
 
 // ================== EVENTOS ==================
-// Inicializa tabela
-document.addEventListener("DOMContentLoaded", carregarProdutos);
+document.addEventListener("DOMContentLoaded", () => {
+  carregarProdutos();
+});

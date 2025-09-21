@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 </head>
+
 <body>
   <div class="layout">
 
@@ -18,35 +20,35 @@
     </header>
 
     <!-- Gráficos (mock) -->
-      <section class="charts">
-        <div class="week-controls">
-          <button id="prev-week">&lt; Semana Anterior</button>
-          <span id="week-range">--/--/---- - --/--/----</span>
-          <button id="next-week">Próxima Semana &gt;</button>
+    <section class="charts">
+      <div class="week-controls">
+        <button id="prev-week">&lt; Semana Anterior</button>
+        <span id="week-range">--/--/---- - --/--/----</span>
+        <button id="next-week">Próxima Semana &gt;</button>
+      </div>
+
+      <div class="chart-content">
+        <div class="chart-box">
+          <h3>Agendamentos por Dia</h3>
+          <canvas id="chart-agendamentos" height="300"></canvas>
         </div>
 
-        <div class="chart-content">
-          <div class="chart-box">
-            <h3>Agendamentos por Dia</h3>
-            <canvas id="chart-agendamentos" height="300"></canvas>
-          </div>
-
-          <div class="chart-box">
-            <h3>Faturamento por Dia (R$)</h3>
-            <canvas id="chart-faturamento" height="300"></canvas>
-          </div>
-
-          <div class="chart-box">
-            <h3>Vendas por Dia</h3>
-            <canvas id="chart-vendas" height="300"></canvas>
-          </div>
-
-          <div class="chart-box">
-            <h3>Faturamento de Vendas (R$)</h3>
-            <canvas id="chart-faturamento-vendas" height="300"></canvas>
-          </div>
+        <div class="chart-box">
+          <h3>Faturamento por Dia (R$)</h3>
+          <canvas id="chart-faturamento" height="300"></canvas>
         </div>
-      </section>
+
+        <div class="chart-box">
+          <h3>Vendas por Dia</h3>
+          <canvas id="chart-vendas" height="300"></canvas>
+        </div>
+
+        <div class="chart-box">
+          <h3>Faturamento de Vendas (R$)</h3>
+          <canvas id="chart-faturamento-vendas" height="300"></canvas>
+        </div>
+      </div>
+    </section>
 
     <!-- Agendamentos -->
     <section class="section">
@@ -63,7 +65,9 @@
             </tr>
           </thead>
           <tbody id="agendamentos-table-body">
-            <tr><td colspan="5">Carregando...</td></tr>
+            <tr>
+              <td colspan="5">Carregando...</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -85,6 +89,19 @@
 
       <!-- Lista de Serviços -->
       <div class="services-list" id="services-list">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Descrição</th>
+              <th>Preço</th>
+              <th>Duração</th>
+              <th>Imagens</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="servicos-table-body"></tbody>
+        </table>
         <!-- Será populada futuramente -->
       </div>
     </section>
@@ -117,7 +134,9 @@
             </tr>
           </thead>
           <tbody id="produtos-table-body">
-            <tr><td colspan="6">Carregando...</td></tr>
+            <tr>
+              <td colspan="6">Carregando...</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -130,5 +149,7 @@
   <script src="logout.js"></script>
   <script src="script-graficos-admin.js" defer></script>
   <script src="script-produtos-admin.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 </body>
+
 </html>

@@ -668,32 +668,33 @@ main{
 ====================================
 */
 .section-services {
-  background-color: var(--color-dark);
+  background-color: var(--color-gray-dark); /* igual products */
 }
 
 .services-grid {
   display: grid;
-  grid-auto-flow: column;   /* força os itens a seguirem horizontalmente */
-  grid-auto-columns: 280px; /* largura fixa ou mínima dos itens */
+  grid-auto-flow: column;
+  grid-auto-columns: 280px;
   gap: 30px;
   overflow-x: auto; 
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   margin-top: 4em;
+  width: max-content;
 }
 
 .service-card {
-  background-color: var(--color-gray-dark);
+  background-color: var(--color-dark); /* igual products */
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
+  height: fit-content;
 }
 
 .service-image-wrapper {
   position: relative;
+  width: 100%;
+  height: 300px;
   overflow: hidden;
-  padding-top: 75%; /* 4:3 Aspect Ratio */
 }
 
 .service-image {
@@ -716,61 +717,40 @@ main{
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to top, rgba(18, 18, 18, 0.8) 0%, rgba(18, 18, 18, 0.2) 50%, rgba(18, 18, 18, 0) 100%);
+  background: linear-gradient(to top, rgba(18, 18, 18, 0.8) 0%, rgba(18, 18, 18, 0) 50%);
 }
 
 .service-content {
-  padding: 24px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  box-sizing: border-box;
+  height: 100%;
+  max-height: 310px;
 }
 
-.service-details {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 12px;
-  gap: 10px;
-}
-
+/* Ajustes de conteúdo igual ao products */
 .service-title {
-  font-size: 24px;
-  color: var(--color-white);
-}
-
-.service-pricing {
-  text-align: right;
-}
-
-.service-price {
-  font-family: var(--font-space-grotesk);
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--color-gold);
-}
-
-.service-duration {
-  font-size: 14px;
-  color: var(--color-gray-light);
-  opacity: 0.8;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  white-space: nowrap;
-}
-
-.service-icon {
-  width: 16px;
-  height: 16px;
+  font-size: 20px; /* antes era 24px */
+  margin-bottom: 8px;
 }
 
 .service-description {
-  font-size: 15px;
+  font-size: 14px; /* antes era 15px */
   color: var(--color-gray-light);
   opacity: 0.7;
   flex-grow: 1;
-  margin-bottom: 20px;
+  margin-bottom: 16px; /* antes era 20px */
+}
+
+.service-pricing {
+  margin-bottom: 20px; /* igual ao products */
+}
+
+.service-price {
+  font-size: 24px; /* antes era 28px */
+  font-weight: 700;
+  color: var(--color-gold);
 }
 
 .cta-banner {
@@ -857,6 +837,9 @@ main{
   padding: 20px;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+  max-height: 346px;
 }
 
 .product-rating {
@@ -1056,6 +1039,7 @@ main{
   width: 100%;
   height: 500px;
   border-radius: 10px;
+  object-fit: cover;
 }
 
 .image-overlay-top {

@@ -15,14 +15,14 @@ async function carregarServicos() {
     }
 
     container.innerHTML = "";
-
+    
     servicos.forEach((servico) => {
       const card = document.createElement("div");
       card.className = "servico-card";
 
       const imagensHTML = servico.imagens && servico.imagens.length > 0
         ? servico.imagens
-            .map(img => `<img src="${img.url}" alt="${servico.nome}" width="50" style="margin-right:5px;">`)
+            .map(img => `<img src="${img.url}" alt="${servico.nome}" width="50" height="50" style="margin-right:5px;">`)
             .join("")
         : "Sem imagens";
 
@@ -120,6 +120,8 @@ async function atualizarServico(id, btn) {
     alert("Erro ao atualizar serviço.");
   }
 }
+
+
 
 // ================= Exclui um serviço =================
 async function excluirServico(id) {
