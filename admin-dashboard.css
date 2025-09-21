@@ -1,9 +1,26 @@
+:root {
+  --color-dark: #121212;
+  --color-gray-dark: #202020;
+  --color-gray-medium: #444;
+  --color-gray-light: #f5f5f5;
+  --color-white: #fff;
+  --color-gold: #EEBD2B;
+  --color-gold-light: #d4c18f;
+  --font-inter: 'Inter', sans-serif;
+  --font-space-grotesk: 'Space Grotesk', sans-serif;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --transition-fast: 0.2s ease-in-out;
+  --transition-medium: 0.3s ease-in-out;
+}
+
 body {
   font-family: "Poppins", sans-serif;
-  background: #f3f4f6;
+  background: #121212;
   margin: 0;
   padding: 20px;
-  color: #333;
+  color: white;
 }
 
 .layout {
@@ -60,7 +77,7 @@ body {
 
 /* Tabela */
 .table-wrapper {
-  background: #fff;
+  background: #202020;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
@@ -71,8 +88,8 @@ table {
 }
 
 th {
-  background: #f3e8ff;
-  color: #6b21a8;
+  background: #444;
+  color: #EEBD2B;
   font-size: 0.9rem;
   text-align: left;
   padding: 12px 16px;
@@ -85,7 +102,7 @@ td {
 }
 
 tr:hover {
-  background: #fafafa;
+  background: #737373;
 }
 
 /* Badge de status */
@@ -118,12 +135,12 @@ tr:hover {
 }
 
 .btn.orange {
-  background: #f97316;
-  color: white;
+  background: #EEBD2B;
+  color: black;
 }
 
 .btn.orange:hover {
-  background: #ea580c;
+  background: #d4c18f;
 }
 
 .btn-link {
@@ -166,19 +183,21 @@ tr:hover {
   justify-content: center;
   gap: 12px;
   margin-bottom: 20px;
-  background: #f3e8ff;
+  background: #202020;
   padding: 16px;
   border-radius: 10px;
 }
 
 .new-service input {
   padding: 10px;
-  border: 1px solid #ddd;
+  background-color: #444;
+  border: 1px solid #202020;
+  color: white;
   border-radius: 6px;
 }
 
 .services-list {
-  background: #fff;
+  background: #121212;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
@@ -316,9 +335,9 @@ tr:hover {
   display: flex;
   gap: 10px;
   margin-top: 10px;
-  background: #fff;
+  background: #202020;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #121212;
   border-radius: 6px;
   align-items: center;
   flex-wrap: wrap;
@@ -334,8 +353,13 @@ tr:hover {
   flex: 1;
   min-width: 120px;
   padding: 8px;
-  border: 1px solid #ccc;
+  color: white;
+  border: 1px solid #000000;
   border-radius: 4px;
+}
+
+.servico-card .input-edit:focus {
+  color: black;
 }
 
 .servico-card .actions {
@@ -344,7 +368,7 @@ tr:hover {
 }
 
 .servico-card .actions button {
-  background-color: #0070f3;
+  background-color: #EEBD2B;
   color: white;
   border: none;
   padding: 8px 10px;
@@ -354,7 +378,7 @@ tr:hover {
 }
 
 .servico-card .actions button:hover {
-  background-color: #005bb5;
+  background-color: #d4c18f;
 }
 
 .chart-content {
@@ -368,7 +392,7 @@ tr:hover {
 
 .chart-box {
   flex: 1 1 48%;
-  background-color: white;
+  background-color: #202020;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -380,7 +404,7 @@ tr:hover {
   margin-bottom: 12px;
   font-size: 18px;
   font-weight: 600;
-  color: #333;
+  color: white;
   text-align: center;
 }
 
@@ -394,8 +418,8 @@ tr:hover {
 }
 
 .week-controls button {
-  background-color: #0070f3;
-  color: white;
+  background-color: #EEBD2B;
+  color: black;
   border: none;
   padding: 10px 16px;
   border-radius: 6px;
@@ -404,13 +428,13 @@ tr:hover {
 }
 
 .week-controls button:hover {
-  background-color: #005bb5;
+  background-color: #d4c18f;
 }
 
 .week-controls span {
   font-weight: 500;
   font-size: 16px;
-  color: #333;
+  color: white;
 }
 
 @media (max-width: 768px) {
@@ -427,8 +451,7 @@ textarea {
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 8px;
-  background-color: #fff;
-  color: #333;
+  background-color: #444;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
   font-family: "Poppins", sans-serif;
@@ -438,10 +461,11 @@ textarea {
 input:focus,
 select:focus,
 textarea:focus {
-  border-color: #f97316;
+  border-color: #EEBD2B;
   /* laranja */
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+  box-shadow: 0 0 0 2px #ddb94c;
   background-color: #fff;
+  color: black;
 }
 
 input[disabled],
@@ -485,7 +509,7 @@ input[type="number"]::-webkit-outer-spin-button {
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 2rem;
-  background: #f3e8ff;
+  background: #202020;
   padding: 1rem;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);

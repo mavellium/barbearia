@@ -1,6 +1,6 @@
 body {
   font-family: "Poppins", sans-serif;
-  background: #f3f4f6;
+  background: #121212;
   margin: 0;
   padding: 20px;
   color: #333;
@@ -12,6 +12,7 @@ body {
 }
 
 .page-title {
+  color: white;
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 30px;
@@ -25,6 +26,7 @@ body {
   font-size: 1.3rem;
   font-weight: 600;
   margin-bottom: 15px;
+  color: white;
 }
 
 .table-wrapper {
@@ -40,8 +42,8 @@ table {
 }
 
 th {
-  background: #f3e8ff;
-  color: #6b21a8;
+  background: #444;
+  color: #EEBD2B;
   font-size: 0.9rem;
   text-align: left;
   padding: 12px;
@@ -93,7 +95,8 @@ tr:hover {
 .form {
   display: grid;
   gap: 12px;
-  background: #fff;
+  background: #444;
+  color: white;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -138,7 +141,7 @@ tr:hover {
 
 .section {
   margin-bottom: 2rem;
-  background: #fff;
+  background: #202020;
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
@@ -219,8 +222,8 @@ table td {
 }
 
 .btn.orange {
-  background: #ff7f32;
-  color: white;
+  background: #EEBD2B;
+  color: black;
   border: none;
   padding: 0.7rem 1.2rem;
   border-radius: 8px;
@@ -231,7 +234,7 @@ table td {
 }
 
 .btn.orange:hover {
-  background: #e5671f;
+  background: #d4c18f;
 }
 
 .checkbox-container {
@@ -241,6 +244,7 @@ table td {
   cursor: pointer;
   font-size: 1rem;
   user-select: none;
+  color: white;
 }
 
 .checkbox-container input {
@@ -250,7 +254,7 @@ table td {
 .custom-checkbox {
   width: 20px;
   height: 20px;
-  border: 2px solid #007bff;
+  border: 2px solid #EEBD2B;
   border-radius: 6px;
   margin-right: 8px;
   position: relative;
@@ -258,8 +262,8 @@ table td {
 }
 
 .checkbox-container input:checked+.custom-checkbox {
-  background: #007bff;
-  border-color: #007bff;
+  background: #EEBD2B;
+  border-color: #EEBD2B;
 }
 
 .custom-checkbox::after {

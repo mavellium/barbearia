@@ -56,7 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ================= Agendamento ================= */
   const appointmentForm = document.getElementById("appointment-form");
-  const appointmentSuccess = document.getElementById("appointment-success");
   const serviceNameInput = document.getElementById("appointment-service-name");
   const timeSelect = document.getElementById("appointment_time");
 
@@ -80,15 +79,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (appointmentForm) {
     appointmentForm.addEventListener("submit", e => {
       e.preventDefault();
-      appointmentForm.classList.add("hidden");
-      appointmentSuccess?.classList.remove("hidden");
-      setTimeout(() => {
-        hideModal("appointment-modal");
-        appointmentForm.classList.remove("hidden");
-        appointmentSuccess?.classList.add("hidden");
-      }, 2000);
+
+      // 🔥 redireciona direto para dashboard
+      window.location.href = "dashboard.html";
     });
   }
+
 
   /* ================= Produto - Modal de Compra ================= */
   const productOrderForm = document.getElementById("product-order-form");
@@ -101,9 +97,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.showProductOrderModal = function (nome, preco, id) {
     selectedProduct = { id, nome, preco };
+
     if (orderProductName) orderProductName.textContent = nome;
     if (orderProductPrice) orderProductPrice.textContent = `R$ ${Number(preco).toFixed(2)}`;
     if (orderQuantity) orderQuantity.value = 1;
+
+    // 🔥 sempre começa no formulário
+    productOrderForm.reset();
+    productOrderForm.classList.remove("hidden");
+    orderSuccess?.classList.add("hidden");
+
     showModal("product-order-modal");
   };
 
@@ -118,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (parts.length === 2) return parts.pop().split(";").shift();
         return null;
       }
+
       const clienteId = getCookie("userId");
       if (!clienteId) return (window.location = "/auth.html");
 
@@ -144,6 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         console.log("Venda registrada:", data);
 
+        // esconde formulário e mostra sucesso
         productOrderForm.classList.add("hidden");
         orderSuccess?.classList.remove("hidden");
 
