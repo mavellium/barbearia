@@ -1,6 +1,6 @@
 const apiBase = "https://lipes-cortes.vercel.app/api/servicos";
 
-// Carrega e exibe os serviços na interface
+// ================= Carrega e exibe os serviços =================
 async function carregarServicos() {
   const container = document.getElementById("services-list");
   container.innerHTML = "Carregando...";
@@ -19,16 +19,30 @@ async function carregarServicos() {
     servicos.forEach((servico) => {
       const card = document.createElement("div");
       card.className = "servico-card";
-      card.innerHTML = `
-          <input type="text" class="input-edit nome" value="${servico.nome}" />
-          <input type="text" class="input-edit descricao" value="${servico.descricao}" />
-          <input type="number" class="input-edit preco" value="${servico.preco}" />
 
-          <div class="actions">
-            <button onclick="atualizarServico('${servico.id}', this)">Salvar</button>
-            <button onclick="excluirServico('${servico.id}')">Excluir</button>
-          </div>
-        `;
+      const imagensHTML = servico.imagens && servico.imagens.length > 0
+        ? servico.imagens
+            .map(img => `<img src="${img.url}" alt="${servico.nome}" width="50" style="margin-right:5px;">`)
+            .join("")
+        : "Sem imagens";
+
+      card.innerHTML = `
+        <input type="text" class="input-edit nome" value="${servico.nome}" />
+        <input type="text" class="input-edit descricao" value="${servico.descricao}" />
+        <input type="number" class="input-edit preco" value="${servico.preco}" />
+        <input type="number" class="input-edit duracao" value="${servico.duracao || 0}" placeholder="Duração (min)" />
+        <input type="text" class="input-edit imagens" value="${
+          servico.imagens ? servico.imagens.map(img => img.url).join(", ") : ""
+        }" placeholder="URLs separadas por vírgula" />
+
+        <div class="actions">
+          <button onclick="atualizarServico('${servico.id}', this)">Salvar</button>
+          <button onclick="excluirServico('${servico.id}')">Excluir</button>
+        </div>
+
+        <div class="preview-imagens">${imagensHTML}</div>
+      `;
+
       container.appendChild(card);
     });
   } catch (error) {
@@ -37,96 +51,105 @@ async function carregarServicos() {
   }
 }
 
-// Adiciona novo serviço
+// ================= Adiciona novo serviço =================
 async function adicionarServico() {
   const nome = document.getElementById("novo-servico-nome").value.trim();
   const descricao = document.getElementById("novo-servico-desc").value.trim();
   const preco = parseFloat(document.getElementById("novo-servico-preco").value);
+  const duracao = parseInt(document.getElementById("novo-servico-duracao").value);
+  const imagensInput = document.getElementById("novo-servico-imagens")?.value.trim() || "";
 
-  if (!nome || !descricao || isNaN(preco)) {
-    alert("Preencha todos os campos corretamente.");
-    return;
+  if (!nome || !descricao || isNaN(preco) || isNaN(duracao)) {
+    return alert("Preencha todos os campos corretamente.");
   }
+
+  const imagens = imagensInput ? imagensInput.split(",").map(url => url.trim()) : [];
 
   try {
     const res = await fetch(apiBase, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, descricao, preco }),
+      body: JSON.stringify({ nome, descricao, preco, duracao, imagens }),
     });
 
-    if (res.ok) {
-      alert("Serviço adicionado com sucesso!");
-      document.getElementById("novo-servico-nome").value = "";
-      document.getElementById("novo-servico-desc").value = "";
-      document.getElementById("novo-servico-preco").value = "";
-      carregarServicos();
-    } else {
+    if (!res.ok) {
       const data = await res.json();
-      alert(data.message || "Erro ao adicionar serviço");
+      return alert(data.message || "Erro ao adicionar serviço.");
     }
+
+    alert("Serviço adicionado com sucesso!");
+    resetFormServico();
+    carregarServicos();
   } catch (err) {
     console.error("Erro ao adicionar serviço:", err);
     alert("Erro ao adicionar serviço.");
   }
 }
 
-// Atualiza um serviço (PATCH)
+// ================= Atualiza um serviço (PATCH) =================
 async function atualizarServico(id, btn) {
   const card = btn.closest(".servico-card");
   const nome = card.querySelector(".nome").value.trim();
   const descricao = card.querySelector(".descricao").value.trim();
   const preco = parseFloat(card.querySelector(".preco").value);
+  const duracao = parseInt(card.querySelector(".duracao").value);
+  const imagensInput = card.querySelector(".imagens").value.trim();
 
-  if (!nome || !descricao || isNaN(preco)) {
-    alert("Preencha todos os campos corretamente.");
-    return;
+  if (!nome || !descricao || isNaN(preco) || isNaN(duracao)) {
+    return alert("Preencha todos os campos corretamente.");
   }
+
+  const imagens = imagensInput ? imagensInput.split(",").map(url => url.trim()) : [];
 
   try {
     const res = await fetch(`${apiBase}/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, descricao, preco }),
+      body: JSON.stringify({ nome, descricao, preco, duracao, imagens }),
     });
 
-    if (res.ok) {
-      alert("Serviço atualizado com sucesso!");
-      carregarServicos();
-    } else {
+    if (!res.ok) {
       const data = await res.json();
-      alert(data.message || "Erro ao atualizar serviço.");
+      return alert(data.message || "Erro ao atualizar serviço.");
     }
+
+    alert("Serviço atualizado com sucesso!");
+    carregarServicos();
   } catch (err) {
     console.error("Erro ao atualizar serviço:", err);
+    alert("Erro ao atualizar serviço.");
   }
 }
 
-// Exclui um serviço
+// ================= Exclui um serviço =================
 async function excluirServico(id) {
   if (!confirm("Tem certeza que deseja excluir este serviço?")) return;
 
   try {
-    const res = await fetch(`${apiBase}/${id}`, {
-      method: "DELETE",
-    });
+    const res = await fetch(`${apiBase}/${id}`, { method: "DELETE" });
 
-    if (res.ok) {
-      alert("Serviço excluído com sucesso!");
-      carregarServicos();
-    } else {
+    if (!res.ok) {
       const data = await res.json();
-      alert(data.message || "Erro ao excluir serviço.");
+      return alert(data.message || "Erro ao excluir serviço.");
     }
+
+    alert("Serviço excluído com sucesso!");
+    carregarServicos();
   } catch (err) {
     console.error("Erro ao excluir serviço:", err);
+    alert("Erro ao excluir serviço.");
   }
 }
 
-// Adiciona evento ao botão de "Adicionar Serviço"
-document
-  .querySelector(".btn.orange")
-  .addEventListener("click", adicionarServico);
+// ================= Reset form =================
+function resetFormServico() {
+  document.getElementById("novo-servico-nome").value = "";
+  document.getElementById("novo-servico-desc").value = "";
+  document.getElementById("novo-servico-preco").value = "";
+  document.getElementById("novo-servico-duracao").value = "";
+  if(document.getElementById("novo-servico-imagens")) document.getElementById("novo-servico-imagens").value = "";
+}
 
-// Carrega os serviços ao abrir a página
+// ================= Eventos =================
+document.querySelector(".btn.orange").addEventListener("click", adicionarServico);
 document.addEventListener("DOMContentLoaded", carregarServicos);

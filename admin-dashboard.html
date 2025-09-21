@@ -35,6 +35,16 @@
             <h3>Faturamento por Dia (R$)</h3>
             <canvas id="chart-faturamento" height="300"></canvas>
           </div>
+
+          <div class="chart-box">
+            <h3>Vendas por Dia</h3>
+            <canvas id="chart-vendas" height="300"></canvas>
+          </div>
+
+          <div class="chart-box">
+            <h3>Faturamento de Vendas (R$)</h3>
+            <canvas id="chart-faturamento-vendas" height="300"></canvas>
+          </div>
         </div>
       </section>
 
@@ -68,6 +78,8 @@
         <input type="text" placeholder="Nome do serviço" id="novo-servico-nome" />
         <input type="text" placeholder="Descrição" id="novo-servico-desc" />
         <input type="number" placeholder="Preço" id="novo-servico-preco" />
+        <input type="number" placeholder="Tempo em minutos" id="novo-servico-duracao" />
+        <input type="text" placeholder="URLs das imagens (separadas por vírgula)" id="novo-servico-imagens" />
         <button class="btn orange">Adicionar Serviço</button>
       </div>
 
@@ -77,6 +89,7 @@
       </div>
     </section>
 
+    <!-- Produtos -->
     <section class="section">
       <h2>Gerenciamento de Produtos</h2>
 
@@ -86,6 +99,7 @@
         <input type="text" placeholder="Descrição" id="novo-produto-desc" />
         <input type="number" placeholder="Preço" id="novo-produto-preco" step="0.01" />
         <input type="number" placeholder="Estoque" id="novo-produto-estoque" />
+        <input type="text" placeholder="URLs das imagens" id="novo-produto-imagens" />
         <button id="btn-adicionar-produto" class="btn orange">Adicionar Produto</button>
       </div>
 
@@ -98,11 +112,12 @@
               <th>Descrição</th>
               <th>Preço</th>
               <th>Estoque</th>
+              <th>Imagens</th>
               <th>Ações</th>
             </tr>
           </thead>
           <tbody id="produtos-table-body">
-            <tr><td colspan="5">Carregando...</td></tr>
+            <tr><td colspan="6">Carregando...</td></tr>
           </tbody>
         </table>
       </div>
