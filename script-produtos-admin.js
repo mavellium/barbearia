@@ -68,14 +68,12 @@ function editarProdutoInline(btn, id) {
   const imagensTd = tr.querySelector(".imagens");
   const imagens = Array.from(imagensTd.querySelectorAll("img")).map(img => img.src);
 
-  // Substitui células por inputs
   tr.querySelector(".nome").innerHTML = `<input type="text" value="${nome}" />`;
   tr.querySelector(".descricao").innerHTML = `<input type="text" value="${descricao}" />`;
   tr.querySelector(".preco").innerHTML = `<input type="number" step="0.01" value="${preco}" />`;
   tr.querySelector(".estoque").innerHTML = `<input type="number" value="${estoque}" />`;
   tr.querySelector(".imagens").innerHTML = `<input type="text" value="${imagens.join(", ")}" placeholder="URLs separadas por vírgula" />`;
 
-  // Substitui botões
   tr.querySelector(".acoes").innerHTML = `
     <button class="btn-icon green" onclick="salvarProdutoInline(this, ${id})">
       <i data-lucide="check"></i>
@@ -125,7 +123,7 @@ async function salvarProdutoInline(btn, id) {
 
 // ================== CANCELAR EDIÇÃO INLINE ==================
 function cancelarEdicaoInline(id) {
-  carregarProdutos(); // recarrega tabela e desfaz edição
+  carregarProdutos();
 }
 
 // ================== EXCLUIR PRODUTO ==================
@@ -146,7 +144,60 @@ async function excluirProduto(id) {
   }
 }
 
+// ================== CONVERTER ARQUIVO PARA BASE64 ==================
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result); // base64
+    reader.onerror = reject;
+    reader.readAsDataURL(file); // converte para base64
+  });
+}
+
 // ================== EVENTOS ==================
-document.addEventListener("DOMContentLoaded", () => {
-  carregarProdutos();
+document.addEventListener("DOMContentLoaded", carregarProdutos);
+
+document.getElementById("btn-adicionar-produto").addEventListener("click", async () => {
+  const nome = document.getElementById("novo-produto-nome").value.trim();
+  const descricao = document.getElementById("novo-produto-desc").value.trim();
+  const preco = parseFloat(document.getElementById("novo-produto-preco").value);
+  const estoque = parseInt(document.getElementById("novo-produto-estoque").value);
+  const imagensInput = document.getElementById("novo-produto-imagens");
+
+  if (!nome || !descricao || isNaN(preco) || isNaN(estoque)) {
+    return alert("Preencha todos os campos corretamente.");
+  }
+
+  const files = imagensInput.files;
+  const imagens = [];
+
+  for (const file of files) {
+    const base64 = await fileToBase64(file);
+    imagens.push(base64);
+  }
+
+  try {
+    const res = await fetch(PRODUTOS_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nome, descricao, preco, estoque, imagens }),
+    });
+
+    if (!res.ok) {
+      const erro = await res.json();
+      return alert("Erro: " + (erro.error || "Não foi possível adicionar o produto."));
+    }
+
+    document.getElementById("novo-produto-nome").value = "";
+    document.getElementById("novo-produto-desc").value = "";
+    document.getElementById("novo-produto-preco").value = "";
+    document.getElementById("novo-produto-estoque").value = "";
+    document.getElementById("novo-produto-imagens").value = "";
+
+    alert("Produto adicionado com sucesso!");
+    carregarProdutos();
+  } catch (err) {
+    console.error("Erro ao adicionar produto:", err);
+    alert("Erro ao adicionar produto.");
+  }
 });

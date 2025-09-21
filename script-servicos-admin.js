@@ -20,7 +20,7 @@ async function carregarServicos() {
       const card = document.createElement("div");
       card.className = "servico-card";
 
-      const imagensHTML = servico.imagens && servico.imagens.length > 0
+      const imagensHTML = servico.imagens?.length
         ? servico.imagens
             .map(img => `<img src="${img.url}" alt="${servico.nome}" width="50" height="50" style="margin-right:5px;">`)
             .join("")
@@ -31,9 +31,7 @@ async function carregarServicos() {
         <input type="text" class="input-edit descricao" value="${servico.descricao}" />
         <input type="number" class="input-edit preco" value="${servico.preco}" />
         <input type="number" class="input-edit duracao" value="${servico.duracao || 0}" placeholder="Duração (min)" />
-        <input type="text" class="input-edit imagens" value="${
-          servico.imagens ? servico.imagens.map(img => img.url).join(", ") : ""
-        }" placeholder="URLs separadas por vírgula" />
+        <input type="file" class="input-edit imagens-file" multiple accept="image/*" />
 
         <div class="actions">
           <button onclick="atualizarServico('${servico.id}', this)">Salvar</button>
@@ -57,13 +55,17 @@ async function adicionarServico() {
   const descricao = document.getElementById("novo-servico-desc").value.trim();
   const preco = parseFloat(document.getElementById("novo-servico-preco").value);
   const duracao = parseInt(document.getElementById("novo-servico-duracao").value);
-  const imagensInput = document.getElementById("novo-servico-imagens")?.value.trim() || "";
+  const fileInput = document.getElementById("novo-servico-files");
 
   if (!nome || !descricao || isNaN(preco) || isNaN(duracao)) {
     return alert("Preencha todos os campos corretamente.");
   }
 
-  const imagens = imagensInput ? imagensInput.split(",").map(url => url.trim()) : [];
+  let imagens = [];
+
+  if (fileInput.files.length > 0) {
+    imagens = await converterArquivosParaBase64(fileInput.files);
+  }
 
   try {
     const res = await fetch(apiBase, {
@@ -86,20 +88,24 @@ async function adicionarServico() {
   }
 }
 
-// ================= Atualiza um serviço (PATCH) =================
+// ================= Atualiza um serviço =================
 async function atualizarServico(id, btn) {
   const card = btn.closest(".servico-card");
   const nome = card.querySelector(".nome").value.trim();
   const descricao = card.querySelector(".descricao").value.trim();
   const preco = parseFloat(card.querySelector(".preco").value);
   const duracao = parseInt(card.querySelector(".duracao").value);
-  const imagensInput = card.querySelector(".imagens").value.trim();
+  const fileInput = card.querySelector(".imagens-file");
 
   if (!nome || !descricao || isNaN(preco) || isNaN(duracao)) {
     return alert("Preencha todos os campos corretamente.");
   }
 
-  const imagens = imagensInput ? imagensInput.split(",").map(url => url.trim()) : [];
+  let imagens = [];
+
+  if (fileInput.files.length > 0) {
+    imagens = await converterArquivosParaBase64(fileInput.files);
+  }
 
   try {
     const res = await fetch(`${apiBase}/${id}`, {
@@ -143,15 +149,33 @@ async function excluirServico(id) {
   }
 }
 
+// ================= Utilitário: Converter arquivos para base64 =================
+async function converterArquivosParaBase64(fileList) {
+  const arquivos = Array.from(fileList);
+  const base64Array = await Promise.all(
+    arquivos.map(
+      (file) =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = (e) => reject(e);
+          reader.readAsDataURL(file);
+        })
+    )
+  );
+  return base64Array;
+}
+
 // ================= Reset form =================
 function resetFormServico() {
   document.getElementById("novo-servico-nome").value = "";
   document.getElementById("novo-servico-desc").value = "";
   document.getElementById("novo-servico-preco").value = "";
   document.getElementById("novo-servico-duracao").value = "";
-  if(document.getElementById("novo-servico-imagens")) document.getElementById("novo-servico-imagens").value = "";
+  document.getElementById("novo-servico-files").value = "";
 }
 
 // ================= Eventos =================
 document.querySelector(".btn.orange").addEventListener("click", adicionarServico);
 document.addEventListener("DOMContentLoaded", carregarServicos);
+

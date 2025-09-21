@@ -83,8 +83,8 @@
         <input type="text" placeholder="Descrição" id="novo-servico-desc" />
         <input type="number" placeholder="Preço" id="novo-servico-preco" />
         <input type="number" placeholder="Tempo em minutos" id="novo-servico-duracao" />
-        <input type="text" placeholder="URLs das imagens (separadas por vírgula)" id="novo-servico-imagens" />
-        <button class="btn orange">Adicionar Serviço</button>
+        <input type="file" id="novo-servico-files" multiple accept="image/*" />
+        <button class="btn orange" id="addservice">Adicionar Serviço</button>
       </div>
 
       <!-- Lista de Serviços -->
@@ -116,7 +116,7 @@
         <input type="text" placeholder="Descrição" id="novo-produto-desc" />
         <input type="number" placeholder="Preço" id="novo-produto-preco" step="0.01" />
         <input type="number" placeholder="Estoque" id="novo-produto-estoque" />
-        <input type="text" placeholder="URLs das imagens" id="novo-produto-imagens" />
+        <input type="file" id="novo-produto-imagens" accept="image/*" multiple />
         <button id="btn-adicionar-produto" class="btn orange">Adicionar Produto</button>
       </div>
 
