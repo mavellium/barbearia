@@ -7,6 +7,10 @@
     <title>Lipe Cortes | Barbearia Premium</title>
     <link rel="stylesheet" href="styles.css">
     <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+        />
+    <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -126,36 +130,46 @@
                 <div class="hero-bottom-gradient"></div>
             </section>
 
-            <section id="servicos" class="section-services">
-                <div class="section-container-servicos">
-                    <div class="section-header">
-                        <div class="icon-header-wrapper">
-                            <i data-lucide="scissors" class="icon-header"></i>
-                        </div>
-                        <h2 class="section-title-servicos">
-                            Nossos <span class="text-gold">Serviços</span>
-                        </h2>
-                        <p class="section-subtitle">
-                            Técnicas modernas e produtos premium para realçar seu estilo único. Cada corte é uma obra de
-                            arte personalizada.
-                        </p>
-                    </div>
+<section id="servicos" class="section-services">
+  <div class="section-container-servicos">
+    <div class="section-header">
+      <div class="icon-header-wrapper">
+        <i data-lucide="scissors" class="icon-header"></i>
+      </div>
+      <h2 class="section-title-servicos">
+        Nossos <span class="text-gold">Serviços</span>
+      </h2>
+      <p class="section-subtitle">
+        Técnicas modernas e produtos premium para realçar seu estilo único. Cada corte é uma obra de
+        arte personalizada.
+      </p>
+    </div>
 
-                    <div id="servicesGrid" class="services-grid" onclick="showAppointmentModal()"></div>
+    <!-- Swiper externo de serviços -->
+    <div class="swiper servicos-swiper">
+      <div class="swiper-wrapper" id="servicesGrid">
+        <!-- serviços via JS -->
+      </div>
 
-                    <div class="cta-banner">
-                        <h3 class="cta-title">Precisa de um atendimento personalizado?</h3>
-                        <p class="cta-description">
-                            Cada cliente é único. Entre em contato conosco para discutir suas necessidades específicas e
-                            criar o visual perfeito para você.
-                        </p>
-                        <a href="dashboard.html"><button type="button" class="btn-hero">
-                            <i data-lucide="calendar" class="btn-icon"></i>
-                            Agendar Consulta
-                        </button></a>
-                    </div>
-                </div>
-            </section>
+      <!-- navegação e paginação -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+
+    <div class="cta-banner">
+      <h3 class="cta-title">Precisa de um atendimento personalizado?</h3>
+      <p class="cta-description">
+        Cada cliente é único. Entre em contato conosco para discutir suas necessidades específicas e
+        criar o visual perfeito para você.
+      </p>
+      <a href="dashboard.html"><button type="button" class="btn-hero">
+        <i data-lucide="calendar" class="btn-icon"></i>
+        Agendar Consulta
+      </button></a>
+    </div>
+  </div>
+</section>
 
             <section id="produtos" class="section-products">
                 <div class="section-container-products">
@@ -173,7 +187,29 @@
                     </div>
 
                     <!-- Grid de produtos vai ser preenchida dinamicamente -->
-                    <div id="productsGrid" class="products-grid"></div>
+                        <div class="swiper produtos-swiper">
+                        <div class="swiper-wrapper" id="productsGrid">
+                            <!-- cada produto vira um .swiper-slide -->
+                            <div class="swiper-slide">
+                            <div class="product-card">
+                                <!-- Swiper interno para imagens -->
+                                <div class="swiper swiper-produto-imagem-0">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide"><img src="img1.jpg"></div>
+                                    <div class="swiper-slide"><img src="img2.jpg"></div>
+                                </div>
+                                <div class="swiper-pagination"></div>
+                                </div>
+                                <!-- resto do conteúdo -->
+                            </div>
+                            </div>
+                        </div>
+
+                        <!-- Controles externos -->
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                        </div>
 
                     <div class="cta-banner">
                         <h3 class="cta-title">Delivery e Retirada na Loja</h3>
@@ -533,7 +569,8 @@
 
 
     <script src="script.js"></script>
-    <script type="module" src="./Service/servicos.js"></script>
+    <script type="module" src="./Service/servicos.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
     <script>
         lucide.createIcons();
     </script>

@@ -85,7 +85,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-
   /* ================= Produto - Modal de Compra ================= */
   const productOrderForm = document.getElementById("product-order-form");
   const orderSuccess = document.getElementById("order-success");
@@ -167,4 +166,74 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+async function carregarProdutos() {
+  const container = document.getElementById("productsGrid"); // id do grid no HTML
+  if (!container) return;
+  container.innerHTML = "";
+
+  try {
+    const res = await fetch("https://lipes-cortes.vercel.app/api/produtos");
+    const produtos = await res.json();
+
+    if (!Array.isArray(produtos) || produtos.length === 0) {
+      container.innerHTML = "<p>Nenhum produto encontrado.</p>";
+      return;
+    }
+
+    produtos.forEach((produto, index) => {
+      const imagens = Array.isArray(produto.imagens) ? produto.imagens : [];
+
+      const uniqueId = `swiper-produto-${index}`;
+
+      const card = document.createElement("div");
+      card.classList.add("product-card");
+      card.innerHTML = `
+        <div class="p-4 shadow-md rounded-xl bg-white">
+          <div class="swiper ${uniqueId}">
+            <div class="swiper-wrapper">
+              ${imagens.length > 0
+                ? imagens.map(url => `
+                  <div class="swiper-slide">
+                    <img src="${url.url}" alt="${produto.nome}" class="w-full h-48 object-cover rounded-xl" />
+                  </div>
+                `).join("")
+                : `
+                  <div class="swiper-slide">
+                    <img src="placeholder.jpg" alt="${produto.nome}" class="w-full h-48 object-cover rounded-xl" />
+                  </div>
+                `}
+            </div>
+            <div class="swiper-pagination"></div>
+          </div>
+          <h3 class="text-lg font-semibold mt-2">${produto.nome}</h3>
+          <p class="text-gray-600">R$ ${Number(produto.preco).toFixed(2)}</p>
+          <button class="mt-2 bg-black text-white px-3 py-1 rounded-lg"
+            onclick="showProductOrderModal('${produto.nome}', '${produto.preco}', '${produto.id}')">
+            Comprar
+          </button>
+        </div>
+      `;
+
+      container.appendChild(card);
+
+      // inicializa o swiper desse produto
+      new Swiper(`.${uniqueId}`, {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        pagination: {
+          el: `.${uniqueId} .swiper-pagination`,
+          clickable: true,
+        },
+      });
+    });
+
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = "<p>Erro ao carregar produtos.</p>";
+  }
+}
+
+
+  // carregarProdutos();
 });

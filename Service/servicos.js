@@ -12,41 +12,83 @@ async function carregarProdutos() {
 
     const produtos = await response.json();
     const grid = document.getElementById("productsGrid");
-
-    grid.innerHTML = ""; // limpa antes de renderizar
+    grid.innerHTML = "";
 
     produtos.forEach((produto, index) => {
       const avaliacao = produto.avaliacao ?? 5;
       const preco = produto.preco ?? 0;
-      const imagem = produto.imagens[0]?.url || "https://placehold.co/600x400?text=Lipe+Cortes";
+      const imagens = Array.isArray(produto.imagens) ? produto.imagens : [];
 
-      const card = document.createElement("div");
-      card.className = "product-card animate-fade-in";
-      card.style.animationDelay = `${index * 100}ms`;
+      const uniqueId = `swiper-produto-imagem-${index}`;
 
-      card.innerHTML = `
-        <div class="product-image-wrapper">
-          <img src="${imagem}" alt="${produto.nome}" class="product-image" />
-          ${produto.destaque ? `<span class="badge badge-featured">Destaque</span>` : ""}
-          <div class="product-overlay"></div>
-        </div>
-        <div class="product-content">
-          <div class="product-rating">
-            ${renderStars(avaliacao)}
-            <span class="rating-text">(${avaliacao.toFixed(1)})</span>
+      const slide = document.createElement("div");
+      slide.className = "swiper-slide"; // produto = 1 slide
+
+      slide.innerHTML = `
+        <div class="product-card animate-fade-in" style="animation-delay:${index * 100}ms">
+          <div class="product-image-wrapper">
+            <div class="swiper ${uniqueId}">
+              <div class="swiper-wrapper">
+                ${
+                  imagens.length > 0
+                    ? imagens.map(img => `
+                        <div class="swiper-slide">
+                          <img src="${img.url || img}" alt="${produto.nome}" class="product-image" />
+                        </div>
+                      `).join("")
+                    : `
+                      <div class="swiper-slide">
+                        <img src="https://placehold.co/600x400?text=Lipe+Cortes" alt="${produto.nome}" class="product-image" />
+                      </div>
+                    `
+                }
+              </div>
+            </div>
+            ${produto.destaque ? `<span class="badge badge-featured">Destaque</span>` : ""}
           </div>
-          <h3 class="product-title">${produto.nome}</h3>
-          <p class="product-description">${produto.descricao}</p>
-          <div class="product-pricing">
-            <span class="product-price">${Number(produto.preco).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span>
+
+          <div class="product-content">
+            <div class="product-rating">
+              ${renderStars(avaliacao)}
+              <span class="rating-text">(${avaliacao.toFixed(1)})</span>
+            </div>
+            <h3 class="product-title">${produto.nome}</h3>
+            <p class="product-description">${produto.descricao}</p>
+            <div class="product-pricing">
+              <span class="product-price">${Number(produto.preco).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span>
+            </div>
+            <button class="btn-hero btn-full-width" onclick="showProductOrderModal('${produto.nome}', ${preco}, ${produto.id})">
+              <i data-lucide="shopping-cart" class="btn-icon"></i>
+              Comprar Agora
+            </button>
           </div>
-          <button class="btn-hero btn-full-width" onclick="showProductOrderModal('${produto.nome}', ${preco}, ${produto.id})">
-            <i data-lucide="shopping-cart" class="btn-icon"></i>
-            Comprar Agora
-          </button>
         </div>
       `;
-      grid.appendChild(card);
+
+      grid.appendChild(slide);
+
+      // inicializa Swiper interno (imagens)
+      new Swiper(`.${uniqueId}`, {
+        slidesPerView: 1,
+      });
+    });
+
+    // inicializa Swiper externo (produtos)
+    new Swiper(".produtos-swiper", {
+      slidesPerView: 1,
+      spaceBetween: 20,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      pagination: {
+        el: ".produtos-swiper > .swiper-pagination",
+        clickable: true,
+      },
+      breakpoints: {
+        640: { slidesPerView: 2 },
+        1024: { slidesPerView: 4 }
+      }
     });
 
     lucide.createIcons();
@@ -54,6 +96,7 @@ async function carregarProdutos() {
     console.error("Erro ao carregar produtos:", err);
   }
 }
+
 
 function renderStars(nota = 5) {
   let stars = "";
@@ -64,24 +107,44 @@ function renderStars(nota = 5) {
 }
 
 async function carregarServicos() {
-  const servicesGrid = document.querySelector(".services-grid");
+  const servicesGrid = document.querySelector("#servicesGrid");
 
-  fetch(`${API_URL}/servicos`)
-    .then(res => {
-      if (!res.ok) throw new Error("Erro na API");
-      return res.json();
-    })
-    .then(servicos => {
-      servicesGrid.innerHTML = ""; // limpa os serviços estáticos
-      servicos.forEach((servico, index) => {
-        const card = document.createElement("div");
-        card.className = "service-card animate-fade-in";
-        card.style.animationDelay = `${index * 150}ms`;
+  try {
+    const response = await fetch(`${API_URL}/servicos`);
+    if (!response.ok) throw new Error("Erro na API");
 
-        card.innerHTML = `
+    const servicos = await response.json();
+    servicesGrid.innerHTML = "";
+
+    servicos.forEach((servico, index) => {
+      const imagens = Array.isArray(servico.imagens) ? servico.imagens : [servico.imagem];
+      const uniqueId = `swiper-servico-imagem-${index}`;
+
+      const slide = document.createElement("div");
+      slide.className = "swiper-slide"; // 1 serviço = 1 slide
+
+      slide.innerHTML = `
+        <div class="service-card animate-fade-in" style="animation-delay:${index * 150}ms">
           <div class="service-image-wrapper">
-            <img src="${servico.imagem || 'https://placehold.co/600x400?text=Lipe+Cortes'}" alt="${servico.nome}" class="service-image" />
-            <div class="service-overlay"></div>
+            <!-- swiper interno só para imagens -->
+            <div class="swiper ${uniqueId}">
+              <div class="swiper-wrapper">
+                ${
+                  imagens && imagens.length > 0
+                    ? imagens.map(img => `
+                        <div class="swiper-slide">
+                          <img src="${img.url || 'https://placehold.co/600x400?text=Lipe+Cortes'}" alt="${servico.nome}" class="service-image" />
+                        </div>
+                      `).join("")
+                    : `
+                      <div class="swiper-slide">
+                        <img src="https://placehold.co/600x400?text=Lipe+Cortes" alt="${servico.nome}" class="service-image" />
+                      </div>
+                    `
+                }
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
           </div>
           <div class="service-content">
             <div class="service-details">
@@ -101,13 +164,39 @@ async function carregarServicos() {
               Agendar Agora
             </button></a>
           </div>
-        `;
+        </div>
+      `;
 
-        servicesGrid.appendChild(card);
+      servicesGrid.appendChild(slide);
+
+      // inicializa Swiper interno (imagens de cada serviço)
+      new Swiper(`.${uniqueId}`, {
+        slidesPerView: 1,
+        pagination: {
+          el: `.${uniqueId} .swiper-pagination`,
+          clickable: true,
+        },
       });
+    });
 
-      // re-render icons do Lucide
-      lucide.createIcons();
-    })
-    .catch(err => console.error("Erro ao carregar serviços:", err));
+    // inicializa Swiper externo (todos os serviços)
+    new Swiper(".servicos-swiper", {
+      slidesPerView: 1,
+      spaceBetween: 20,
+      navigation: {
+        nextEl: ".servicos-swiper .swiper-button-next",
+        prevEl: ".servicos-swiper .swiper-button-prev",
+      },
+      breakpoints: {
+        0: {slidesPerView: 1},
+        779: { slidesPerView: 2 },
+        1024: { slidesPerView: 4 }
+      }
+    });
+
+    lucide.createIcons();
+  } catch (err) {
+    console.error("Erro ao carregar serviços:", err);
+  }
 }
+
