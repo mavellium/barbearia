@@ -18,7 +18,7 @@ async function carregarProdutos() {
     produtos.forEach((produto, index) => {
       const avaliacao = produto.avaliacao ?? 5;
       const preco = produto.preco ?? 0;
-      const imagem = produto.imagem ?? "https://via.placeholder.com/300";
+      const imagem = produto.imagens[0]?.url || "https://placehold.co/600x400?text=Lipe+Cortes";
 
       const card = document.createElement("div");
       card.className = "product-card animate-fade-in";
@@ -38,9 +38,9 @@ async function carregarProdutos() {
           <h3 class="product-title">${produto.nome}</h3>
           <p class="product-description">${produto.descricao}</p>
           <div class="product-pricing">
-            <span class="product-price">R$ ${preco.toFixed(2)}</span>
+            <span class="product-price">${Number(produto.preco).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span>
           </div>
-          <button class="btn-hero btn-full-width" onclick="showProductOrderModal('${produto.nome}', ${preco})">
+          <button class="btn-hero btn-full-width" onclick="showProductOrderModal('${produto.nome}', ${preco}, ${produto.id})">
             <i data-lucide="shopping-cart" class="btn-icon"></i>
             Comprar Agora
           </button>
@@ -73,8 +73,6 @@ async function carregarServicos() {
     })
     .then(servicos => {
       servicesGrid.innerHTML = ""; // limpa os serviços estáticos
-      console.log(servicos);
-
       servicos.forEach((servico, index) => {
         const card = document.createElement("div");
         card.className = "service-card animate-fade-in";
@@ -82,7 +80,7 @@ async function carregarServicos() {
 
         card.innerHTML = `
           <div class="service-image-wrapper">
-            <img src="${servico.imagem}" alt="${servico.nome}" class="service-image" />
+            <img src="${servico.imagem || 'https://placehold.co/600x400?text=Lipe+Cortes'}" alt="${servico.nome}" class="service-image" />
             <div class="service-overlay"></div>
           </div>
           <div class="service-content">
