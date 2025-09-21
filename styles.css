@@ -50,6 +50,10 @@ h1, h2, h3 {
   color: var(--color-white);
 }
 
+main{
+  padding-top: 82px;
+}
+
 /*
 ====================================
   2. Utilities & Layout
@@ -575,7 +579,6 @@ h1, h2, h3 {
 }
 
 .hero-headline {
-  padding-top: 60px;
   font-size: 4.5rem;
   font-weight: 700;
   line-height: 1.1;
@@ -728,6 +731,7 @@ h1, h2, h3 {
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 12px;
+  gap: 10px;
 }
 
 .service-title {
