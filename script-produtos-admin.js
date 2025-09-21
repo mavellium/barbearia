@@ -1,171 +1,138 @@
 const PRODUTOS_API = "https://lipes-cortes.vercel.app/api/produtos";
 
-document.addEventListener("DOMContentLoaded", () => {
-  carregarProdutos();
-
-  document
-    .getElementById("btn-adicionar-produto")
-    .addEventListener("click", criarProduto);
-});
-
-// ================== LISTAR ==================
+// ================== CARREGAR PRODUTOS ==================
 async function carregarProdutos() {
+  const tbody = document.getElementById("produtos-table-body");
+  tbody.innerHTML = "<tr><td colspan='6'>Carregando...</td></tr>";
+
   try {
     const res = await fetch(PRODUTOS_API);
     const produtos = await res.json();
 
-    const tbody = document.getElementById("produtos-table-body");
-    tbody.innerHTML = "";
+    if (!Array.isArray(produtos) || produtos.length === 0) {
+      tbody.innerHTML = "<tr><td colspan='6'>Nenhum produto cadastrado.</td></tr>";
+      return;
+    }
 
+    tbody.innerHTML = "";
     produtos
       .filter((p) => !p.deletado)
       .forEach((prod) => {
         const tr = document.createElement("tr");
 
         tr.innerHTML = `
-          <td>${prod.nome}</td>
-          <td>${prod.descricao}</td>
-          <td>R$ ${prod.preco.toFixed(2)}</td>
-          <td>${prod.estoque}</td>
-          <td>
-            <button class="btn small blue" onclick="editarProduto(${
-              prod.id
-            })">Editar</button>
-            <button class="btn small red" onclick="excluirProduto(${
-              prod.id
-            })">Excluir</button>
+          <td class="nome">${prod.nome}</td>
+          <td class="descricao">${prod.descricao}</td>
+          <td class="preco">R$ ${prod.preco.toFixed(2)}</td>
+          <td class="estoque">${prod.estoque}</td>
+          <td class="imagens">
+            ${
+              prod.imagens && prod.imagens.length > 0
+                ? prod.imagens
+                    .map(
+                      (img) =>
+                        `<img src="${img.url}" alt="${prod.nome}" width="50" style="margin-right:5px;" />`
+                    )
+                    .join("")
+                : "Sem imagens"
+            }
+          </td>
+          <td class="acoes">
+            <button class="btn small blue" onclick="editarProdutoInline(this, ${prod.id})">Editar</button>
+            <button class="btn small red" onclick="excluirProduto(${prod.id})">Excluir</button>
           </td>
         `;
 
         tbody.appendChild(tr);
       });
   } catch (err) {
-    console.error("Erro ao carregar produtos:", err);
+    tbody.innerHTML = `<tr><td colspan='6' style="color:red">Erro: ${err.message}</td></tr>`;
   }
 }
 
-// ================== CRIAR ==================
-async function criarProduto() {
-  const nome = document.getElementById("novo-produto-nome").value.trim();
-  const descricao = document.getElementById("novo-produto-desc").value.trim();
-  const preco = parseFloat(document.getElementById("novo-produto-preco").value);
-  const estoque = parseInt(
-    document.getElementById("novo-produto-estoque").value
-  );
+// ================== EDITAR INLINE ==================
+function editarProdutoInline(btn, id) {
+  const tr = btn.closest("tr");
 
-  if (!nome || !descricao || isNaN(preco) || isNaN(estoque)) {
-    alert("Preencha todos os campos corretamente.");
-    return;
-  }
+  const nome = tr.querySelector(".nome").textContent;
+  const descricao = tr.querySelector(".descricao").textContent;
+  const preco = tr.querySelector(".preco").textContent.replace("R$ ", "");
+  const estoque = tr.querySelector(".estoque").textContent;
+  const imagensTd = tr.querySelector(".imagens");
+  const imagens = Array.from(imagensTd.querySelectorAll("img")).map(img => img.src);
 
-  try {
-    const res = await fetch(PRODUTOS_API, {
-      method: "POST",
-      body: JSON.stringify({ nome, descricao, preco, estoque }),
-    });
+  // Substitui células por inputs
+  tr.querySelector(".nome").innerHTML = `<input type="text" value="${nome}" />`;
+  tr.querySelector(".descricao").innerHTML = `<input type="text" value="${descricao}" />`;
+  tr.querySelector(".preco").innerHTML = `<input type="number" step="0.01" value="${preco}" />`;
+  tr.querySelector(".estoque").innerHTML = `<input type="number" value="${estoque}" />`;
+  tr.querySelector(".imagens").innerHTML = `<input type="text" value="${imagens.join(", ")}" placeholder="URLs separadas por vírgula" />`;
 
-    if (!res.ok) {
-      const erro = await res.json();
-      alert("Erro: " + erro.error);
-      return;
-    }
-
-    alert("Produto criado com sucesso!");
-    document.getElementById("novo-produto-nome").value = "";
-    document.getElementById("novo-produto-desc").value = "";
-    document.getElementById("novo-produto-preco").value = "";
-    document.getElementById("novo-produto-estoque").value = "";
-    carregarProdutos();
-  } catch (err) {
-    console.error("Erro ao criar produto:", err);
-  }
-}
-
-// ================== EDITAR ==================
-function editarProduto(id) {
-  const tbody = document.getElementById("produtos-table-body");
-  const tr = Array.from(tbody.children).find((r) =>
-    r.querySelector(`button[onclick="editarProduto(${id})"]`)
-  );
-
-  if (!tr) return;
-
-  // pega os valores atuais
-  const nome = tr.children[0].textContent;
-  const descricao = tr.children[1].textContent;
-  const preco = tr.children[2].textContent.replace("R$ ", "");
-  const estoque = tr.children[3].textContent;
-
-  // substitui células por inputs
-  tr.children[0].innerHTML = `<input type="text" value="${nome}" />`;
-  tr.children[1].innerHTML = `<input type="text" value="${descricao}" />`;
-  tr.children[2].innerHTML = `<input type="number" step="0.01" value="${preco}" />`;
-  tr.children[3].innerHTML = `<input type="number" value="${estoque}" />`;
-
-  // altera botões
-  tr.children[4].innerHTML = `
-    <button class="btn small green" onclick="salvarProduto(${id}, this)">Salvar</button>
-    <button class="btn small gray" onclick="cancelarEdicao(${id})">Cancelar</button>
+  // Substitui botões
+  tr.querySelector(".acoes").innerHTML = `
+    <button class="btn small green" onclick="salvarProdutoInline(this, ${id})">Salvar</button>
+    <button class="btn small gray" onclick="cancelarEdicaoInline(${id})">Cancelar</button>
   `;
 }
 
-// ================== SALVAR E CANCELAR ==================
-async function salvarProduto(id, btn) {
+// ================== SALVAR EDIÇÃO INLINE ==================
+async function salvarProdutoInline(btn, id) {
   const tr = btn.closest("tr");
-  const [nome, descricao, preco, estoque] = Array.from(
-    tr.querySelectorAll("input")
-  ).map((i) => i.value.trim());
+
+  const nome = tr.querySelector("td:nth-child(1) input").value.trim();
+  const descricao = tr.querySelector("td:nth-child(2) input").value.trim();
+  const preco = parseFloat(tr.querySelector("td:nth-child(3) input").value);
+  const estoque = parseInt(tr.querySelector("td:nth-child(4) input").value);
+  const imagensInput = tr.querySelector("td:nth-child(5) input").value.trim();
 
   if (!nome || !descricao || isNaN(preco) || isNaN(estoque)) {
-    alert("Preencha todos os campos corretamente.");
-    return;
+    return alert("Preencha todos os campos corretamente.");
   }
+
+  const imagens = imagensInput ? imagensInput.split(",").map(url => url.trim()) : [];
 
   try {
     const res = await fetch(`${PRODUTOS_API}/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        nome,
-        descricao,
-        preco: parseFloat(preco),
-        estoque: parseInt(estoque),
-      }),
+      body: JSON.stringify({ nome, descricao, preco, estoque, imagens }),
     });
 
     if (!res.ok) {
       const erro = await res.json();
-      alert("Erro: " + erro.error);
-      return;
+      return alert("Erro: " + (erro.error || "Não foi possível atualizar o produto."));
     }
 
-    alert("Produto atualizado!");
     carregarProdutos();
   } catch (err) {
-    console.error("Erro ao salvar produto:", err);
+    console.error("Erro ao atualizar produto:", err);
+    alert("Erro ao atualizar produto.");
   }
 }
 
-function cancelarEdicao(id) {
-  carregarProdutos(); // apenas recarrega a tabela
+// ================== CANCELAR EDIÇÃO INLINE ==================
+function cancelarEdicaoInline(id) {
+  carregarProdutos(); // recarrega tabela e desfaz edição
 }
 
-// ================== EXCLUIR ==================
+// ================== EXCLUIR PRODUTO ==================
 async function excluirProduto(id) {
   if (!confirm("Tem certeza que deseja excluir este produto?")) return;
 
   try {
     const res = await fetch(`${PRODUTOS_API}/${id}`, { method: "DELETE" });
-
     if (!res.ok) {
       const erro = await res.json();
-      alert("Erro: " + erro.error);
-      return;
+      return alert("Erro: " + (erro.error || "Não foi possível excluir o produto."));
     }
 
-    alert("Produto excluído com sucesso!");
     carregarProdutos();
   } catch (err) {
     console.error("Erro ao excluir produto:", err);
+    alert("Erro ao excluir produto.");
   }
 }
+
+// ================== EVENTOS ==================
+// Inicializa tabela
+document.addEventListener("DOMContentLoaded", carregarProdutos);
