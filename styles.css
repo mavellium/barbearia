@@ -575,6 +575,7 @@ h1, h2, h3 {
 }
 
 .hero-headline {
+  padding-top: 60px;
   font-size: 4.5rem;
   font-weight: 700;
   line-height: 1.1;

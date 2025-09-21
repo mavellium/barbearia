@@ -258,14 +258,14 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="service-pricing">
                 <p class="service-price">R$ ${servico.preco.toFixed(2)}</p>
                 <p class="service-duration">
-                  <i data-lucide="clock" class="service-icon"></i>${servico.duracao || ""}
-                </p>
+  <i data-lucide="clock" class="service-icon"></i>${servico.duracao ? servico.duracao + "m" : ""}
+</p>
               </div>
             </div>
             <p class="service-description">${servico.descricao || ""}</p>
-            <button class="btn-hero btn-full-width" onclick="showAppointmentModal('${servico.nome}')">
+            <a href="dashboard.html"><button class="btn-hero btn-full-width" onclick="showAppointmentModal('${servico.nome}')">
               <i data-lucide="calendar" class="btn-icon"></i> Agendar Agora
-            </button>
+            </button></a>
           </div>`;
         grid.appendChild(card);
       });
