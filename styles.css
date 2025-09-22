@@ -672,21 +672,21 @@ main{
 
 .services-grid {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 280px;
-  gap: 30px;
-  overflow-x: auto; 
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
   margin-top: 4em;
-  width: max-content;
+  /* remova overflow-x se não precisar de scroll horizontal */
 }
 
 .service-card {
-  background-color: var(--color-dark); /* igual products */
+  background-color: var(--color-dark);
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  height: fit-content;
+  /* força ocupar 100% do grid item */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .service-image-wrapper {
@@ -728,9 +728,8 @@ main{
   padding: 20px;
   display: flex;
   flex-direction: column;
+  flex-grow: 1; /* faz o conteúdo ocupar o espaço restante */
   box-sizing: border-box;
-  height: 100%;
-  max-height: 420px;
 }
 
 /* Ajustes de conteúdo igual ao products */
@@ -792,12 +791,10 @@ main{
 
 .products-grid {
   display: grid;
-  grid-auto-flow: column;   /* força os itens a seguirem horizontalmente */
-  grid-auto-columns: 280px; /* largura fixa ou mínima dos itens */
-  gap: 30px;
-  overflow-x: auto; 
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
   margin-top: 4em;
+  /* remove overflow-x se não quiser scroll horizontal */
 }
 
 .product-card {
@@ -805,6 +802,9 @@ main{
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* força ocupar toda altura do grid item */
 }
 
 .product-image-wrapper {
@@ -841,9 +841,9 @@ main{
   padding: 20px;
   display: flex;
   flex-direction: column;
+  flex-grow: 1; /* ocupa o espaço restante do card */
   box-sizing: border-box;
   height: 100%;
-  max-height: 346px;
 }
 
 .product-rating {
@@ -882,6 +882,7 @@ main{
   color: var(--color-gold);
 }
 
+/* Delivery info continua igual */
 .delivery-info {
   display: flex;
   flex-direction: column;
@@ -934,11 +935,8 @@ main{
   }
 }
 
-/*
-====================================
-  7. About Section
-====================================
-*/
+
+/* ================= About Section ================= */
 .section-about {
   background-color: var(--color-dark);
 }
@@ -948,6 +946,7 @@ main{
   display: flex;
   flex-direction: column;
   gap: 60px;
+  margin: 0 auto;
 }
 
 .about-text-content {
@@ -974,8 +973,7 @@ main{
   display: flex;
   justify-content: center;
   gap: 40px;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin: 40px 0;
   flex-wrap: wrap;
   width: max-content;
 }
@@ -1033,35 +1031,21 @@ main{
   flex-direction: column;
   align-items: center;
   height: fit-content;
+  position: relative;
 }
 
 .about-image-inner {
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .about-image {
   width: 100%;
-  height: 500px;
+  max-width: 1900px;
+  height: auto;
   border-radius: 10px;
   object-fit: cover;
-}
-
-.image-overlay-top {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 50%;
-  background: linear-gradient(to bottom, rgba(18, 18, 18, 0.4) 0%, rgba(18, 18, 18, 0) 100%);
-}
-
-.image-overlay-sides {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to right, rgba(18, 18, 18, 0.4) 0%, rgba(18, 18, 18, 0) 20%, rgba(18, 18, 18, 0) 80%, rgba(18, 18, 18, 0.4) 100%);
 }
 
 .about-quote-box {
@@ -1093,20 +1077,111 @@ main{
   display: block;
 }
 
-@media (min-width: 992px) {
+/* ================= Media Queries ================= */
+
+/* ================= Large Desktop 1040px ================= */
+@media (max-width: 1040px) {
   .about-content {
-    flex-direction: row;
-    text-align: left;
-  }
-  .about-text-content {
-    width: 30em;
     display: flex;
-    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    width: 90%;
+    gap: 50px;
   }
-  .section-header {
+
+  .section-container-sobre {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+/* ================= Tablet 768px ================= */
+@media (max-width: 768px) {
+  .about-content {
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    margin: 0;
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .about-text-content {
+    width: 100%;
+  }
+
+  .about-image-wrapper {
+    width: 100%;
+  }
+
+  .about-stats-grid {
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .stat-item {
+    width: 100%;
+    max-width: none;
+  }
+
+  .about-quote-box {
+    width: 90%;
+    transform: translate(-50%, 50%);
+  }
+}
+
+/* ================= Small Tablet 452px ================= */
+@media (max-width: 452px) {
+  .about-story {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .stat-number {
+    font-size: 32px;
+  }
+
+  .about-quote-box {
+    width: 95%;
+    padding: 15px;
+  }
+}
+
+/* ================= Mobile 375px ================= */
+@media (max-width: 375px) {
+  .about-story {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .stat-number {
+    font-size: 28px;
+  }
+
+  .about-quote-box {
+    width: 95%;
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
+/* ================= Mobile Small 320px ================= */
+@media (max-width: 320px) {
+  .about-story {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .stat-number {
+    font-size: 24px;
+  }
+
+  .about-quote-box {
+    width: 95%;
+    font-size: 13px;
+    padding: 10px;
   }
 }
 
