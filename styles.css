@@ -672,21 +672,21 @@ main{
 
 .services-grid {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 280px;
-  gap: 30px;
-  overflow-x: auto; 
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
   margin-top: 4em;
-  width: max-content;
+  /* remova overflow-x se não precisar de scroll horizontal */
 }
 
 .service-card {
-  background-color: var(--color-dark); /* igual products */
+  background-color: var(--color-dark);
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  height: fit-content;
+  /* força ocupar 100% do grid item */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .service-image-wrapper {
@@ -728,9 +728,8 @@ main{
   padding: 20px;
   display: flex;
   flex-direction: column;
+  flex-grow: 1; /* faz o conteúdo ocupar o espaço restante */
   box-sizing: border-box;
-  height: 100%;
-  max-height: 420px;
 }
 
 /* Ajustes de conteúdo igual ao products */
@@ -792,12 +791,10 @@ main{
 
 .products-grid {
   display: grid;
-  grid-auto-flow: column;   /* força os itens a seguirem horizontalmente */
-  grid-auto-columns: 280px; /* largura fixa ou mínima dos itens */
-  gap: 30px;
-  overflow-x: auto; 
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
   margin-top: 4em;
+  /* remove overflow-x se não quiser scroll horizontal */
 }
 
 .product-card {
@@ -805,6 +802,9 @@ main{
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* força ocupar toda altura do grid item */
 }
 
 .product-image-wrapper {
@@ -841,9 +841,9 @@ main{
   padding: 20px;
   display: flex;
   flex-direction: column;
+  flex-grow: 1; /* ocupa o espaço restante do card */
   box-sizing: border-box;
   height: 100%;
-  max-height: 346px;
 }
 
 .product-rating {
@@ -882,6 +882,7 @@ main{
   color: var(--color-gold);
 }
 
+/* Delivery info continua igual */
 .delivery-info {
   display: flex;
   flex-direction: column;
@@ -933,6 +934,7 @@ main{
     padding-top: 15px;
   }
 }
+
 
 /*
 ====================================
