@@ -31,7 +31,7 @@ async function carregarProdutos() {
                 ? prod.imagens
                     .map(
                       (img) =>
-                        `<img src="${img.url}" alt="${prod.nome}" width="50" style="margin-right:5px;" />`
+                        `<img src="${img.url || img}" alt="${prod.nome}" width="50" style="margin-right:5px;" />`
                     )
                     .join("")
                 : "Sem imagens"
@@ -72,7 +72,12 @@ function editarProdutoInline(btn, id) {
   tr.querySelector(".descricao").innerHTML = `<input type="text" value="${descricao}" />`;
   tr.querySelector(".preco").innerHTML = `<input type="number" step="0.01" value="${preco}" />`;
   tr.querySelector(".estoque").innerHTML = `<input type="number" value="${estoque}" />`;
-  tr.querySelector(".imagens").innerHTML = `<input type="text" value="${imagens.join(", ")}" placeholder="URLs separadas por vírgula" />`;
+  tr.querySelector(".imagens").innerHTML = `
+    <input type="file" multiple accept="image/*" />
+    <div class="preview-images">
+      ${imagens.map(url => `<img src="${url}" width="50" style="margin-right:5px;" />`).join("")}
+    </div>
+  `;
 
   tr.querySelector(".acoes").innerHTML = `
     <button class="btn-icon green" onclick="salvarProdutoInline(this, ${id})">
@@ -94,19 +99,30 @@ async function salvarProdutoInline(btn, id) {
   const descricao = tr.querySelector("td:nth-child(2) input").value.trim();
   const preco = parseFloat(tr.querySelector("td:nth-child(3) input").value);
   const estoque = parseInt(tr.querySelector("td:nth-child(4) input").value);
-  const imagensInput = tr.querySelector("td:nth-child(5) input").value.trim();
 
   if (!nome || !descricao || isNaN(preco) || isNaN(estoque)) {
     return alert("Preencha todos os campos corretamente.");
   }
 
-  const imagens = imagensInput ? imagensInput.split(",").map(url => url.trim()) : [];
+  // Pega os arquivos novos
+  const fileInput = tr.querySelector("td:nth-child(5) input[type=file]");
+  const files = fileInput.files;
+  const imagensNovas = [];
+
+  for (const file of files) {
+    const base64 = await fileToBase64(file);
+    imagensNovas.push(base64);
+  }
+
+  // Mantém imagens antigas que já estavam no preview
+  const oldImages = Array.from(tr.querySelectorAll(".preview-images img")).map(img => img.src);
+  const todasImagens = [...oldImages, ...imagensNovas];
 
   try {
     const res = await fetch(`${PRODUTOS_API}/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, descricao, preco, estoque, imagens }),
+      body: JSON.stringify({ nome, descricao, preco, estoque, imagens: todasImagens }),
     });
 
     if (!res.ok) {
@@ -154,9 +170,7 @@ function fileToBase64(file) {
   });
 }
 
-// ================== EVENTOS ==================
-document.addEventListener("DOMContentLoaded", carregarProdutos);
-
+// ================== ADICIONAR NOVO PRODUTO ==================
 document.getElementById("btn-adicionar-produto").addEventListener("click", async () => {
   const nome = document.getElementById("novo-produto-nome").value.trim();
   const descricao = document.getElementById("novo-produto-desc").value.trim();
@@ -188,6 +202,7 @@ document.getElementById("btn-adicionar-produto").addEventListener("click", async
       return alert("Erro: " + (erro.error || "Não foi possível adicionar o produto."));
     }
 
+    // Limpar campos
     document.getElementById("novo-produto-nome").value = "";
     document.getElementById("novo-produto-desc").value = "";
     document.getElementById("novo-produto-preco").value = "";
@@ -201,3 +216,6 @@ document.getElementById("btn-adicionar-produto").addEventListener("click", async
     alert("Erro ao adicionar produto.");
   }
 });
+
+// ================== EVENTOS ==================
+document.addEventListener("DOMContentLoaded", carregarProdutos);

@@ -562,3 +562,82 @@ input[type="number"]::-webkit-outer-spin-button {
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
+
+/* ===================== Ajustes Gerais ===================== */
+.products-list table td, table th {
+  vertical-align: middle; /* garante alinhamento central */
+}
+
+.products-list td input[type="text"],
+.products-list td input[type="number"],
+.products-list td input[type="file"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #444;
+  color: white;
+}
+
+.products-list td input[type="file"] {
+  padding: 3px 6px;
+}
+
+/* ===================== Preview de imagens ===================== */
+.products-list .preview-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+  max-height: 60px;
+  overflow-y: auto;
+}
+
+.products-list .preview-images img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #eee;
+}
+
+/* ===================== Inline Edit Fix ===================== */
+.products-list td .preview-images,
+.products-list td input[type="file"] {
+  display: block;
+  max-width: 100%;
+}
+
+.products-list td .acoes button {
+  margin: 0 2px;
+}
+
+/* ===================== Responsividade ===================== */
+@media (max-width: 768px) {
+  .products-list table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .products-list table td, table th {
+    min-width: 120px; /* evita colapsar células */
+  }
+  .products-list .chart-box {
+    flex: 1 1 100%;
+  }
+}
+
+/* ===================== Ajustes visuais ===================== */
+.products-list td:hover input,
+.products-list td:hover select {
+  background-color: #555;
+}
+
+.products-list td input:focus {
+  border-color: #EEBD2B;
+  box-shadow: 0 0 0 2px #ddb94c;
+  background-color: #fff;
+  color: black;
+}
