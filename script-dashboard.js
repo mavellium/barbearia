@@ -46,7 +46,7 @@
           <td>${ag.status}</td>
           <td>
             <button class="action-btn edit-btn" onclick="remarcarAgendamento('${ag.id}')">Editar</button>
-            <button class="action-btn delete-btn" onclick="deletarAgendamento('${ag.id}')">Excluir</button>
+            <button class="action-btn delete-btn" onclick="cancelarAgendamento('${ag.id}')">Cancelar</button>
           </td>
         `;
         tbody.appendChild(row);
@@ -120,48 +120,108 @@
     }
   }
 
-  async function remarcarAgendamento(id) {
-    const novaData = prompt("Informe a nova data (AAAA-MM-DD HH:mm):");
-    if (!novaData) return;
+let agendamentoEditandoId = null;
 
-    try {
-      const res = await fetch(`${API_URL}/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ novaData }),
-      });
+async function remarcarAgendamento(id) {
+  agendamentoEditandoId = id;
+  document.getElementById("edit-date").value = "";
 
-      if (!res.ok) {
-        const erro = await res.json();
-        alert("Erro: " + erro.error);
-        return;
-      }
+  // Carrega os serviços disponíveis
+  try {
+    const res = await fetch("https://lipes-cortes.vercel.app/api/servicos");
+    const servicos = await res.json();
 
-      alert("Agendamento remarcado!");
-      carregarAgendamentos(getCookie("userId"));
-    } catch (err) {
-      console.error("Erro ao remarcar:", err);
-    }
+    const container = document.getElementById("edit-service-checkboxes");
+    container.innerHTML = "";
+
+    servicos.forEach(s => {
+      const label = document.createElement("label");
+      label.innerHTML = `
+        <input type="checkbox" value="${s.id}" />
+        <strong>${s.nome}</strong> - R$${s.preco.toFixed(2)} (${s.duracao || 30} min) <br>
+      `;
+      container.appendChild(label);
+    });
+
+    abrirModal();
+  } catch (err) {
+    console.error("Erro ao carregar serviços:", err);
+    alert("Erro ao carregar serviços.");
+  }
+}
+
+function abrirModal() {
+  document.getElementById("edit-modal").style.display = "block";
+}
+
+function fecharModal() {
+  document.getElementById("edit-modal").style.display = "none";
+  agendamentoEditandoId = null;
+}
+
+async function salvarEdicao() {
+  const novaData = document.getElementById("edit-date").value;
+
+  const checkboxes = document.querySelectorAll("#edit-service-checkboxes input[type='checkbox']:checked");
+  const servicoIds = Array.from(checkboxes).map(cb => cb.value);
+
+  if (!novaData && servicoIds.length === 0) {
+    alert("Selecione uma nova data ou serviços para editar.");
+    return;
   }
 
-  async function deletarAgendamento(id) {
-    if (!confirm("Tem certeza que deseja excluir este agendamento?")) return;
+  const body = {};
+  if (novaData) body.novaData = novaData;
+  if (servicoIds.length > 0) body.servicoIds = servicoIds;
 
-    try {
-      const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+  try {
+    const res = await fetch(`${API_URL}/${agendamentoEditandoId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
 
-      if (!res.ok) {
-        const erro = await res.json();
-        alert("Erro: " + erro.error);
-        return;
-      }
+    const resultado = await res.json();
 
-      alert("Agendamento excluído!");
-      carregarAgendamentos(getCookie("userId"));
-    } catch (err) {
-      console.error("Erro ao excluir:", err);
+    if (!res.ok) {
+      alert("Erro: " + resultado.error);
+      return;
     }
+
+    alert("Agendamento atualizado com sucesso!");
+    fecharModal();
+    carregarAgendamentos(getCookie("userId"));
+  } catch (err) {
+    console.error("Erro ao editar agendamento:", err);
+    alert("Erro ao editar agendamento.");
   }
+}
+
+
+
+async function cancelarAgendamento(id) {
+  if (!confirm("Tem certeza que deseja cancelar este agendamento?")) return;
+
+  try {
+    const res = await fetch(`${API_URL}/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ status: "CANCELADO" }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || "Erro ao cancelar agendamento.");
+      return;
+    }
+
+    alert("Agendamento cancelado com sucesso!");
+    carregarAgendamentos(getCookie("userId"));
+  } catch (err) {
+    console.error("Erro ao cancelar agendamento:", err);
+    alert("Erro ao cancelar agendamento.");
+  }
+}
 
     async function carregarCompras() {
       const tabela = document.querySelector("#purchases-table tbody");
