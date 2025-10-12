@@ -584,12 +584,18 @@ main{
   letter-spacing: -2px;
 }
 
+@media screen and (max-width: 650px) {
+  .hero-headline {
+    font-size: 3rem;
+  }
+}
+
 .text-block {
   display: block;
 }
 
 .hero-subtitle {
-  font-size: clamp(16px, 2.5vw, 22px);
+  font-size: clamp(14px, 2.5vw, 22px);
   max-width: 600px;
   margin: 20px auto 40px;
   opacity: 0.8;
@@ -1435,6 +1441,18 @@ main{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 40px;
+}
+
+@media screen and (max-width: 650px) {
+  .footer-grid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .footer-grid{
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 .footer-brand .logo-container {

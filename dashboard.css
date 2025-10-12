@@ -252,8 +252,8 @@ table td {
 }
 
 .custom-checkbox {
-  width: 20px;
-  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
   border: 2px solid #EEBD2B;
   border-radius: 6px;
   margin-right: 8px;
