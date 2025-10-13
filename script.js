@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const mobileMenu = document.getElementById("mobile-menu");
   if (mobileMenuButton && mobileMenu) {
     mobileMenuButton.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden");
+      mobileMenu.classList.toggle("active");
       const icon = mobileMenuButton.querySelector("i");
       if (icon) {
         icon.setAttribute("data-lucide", mobileMenu.classList.contains("hidden") ? "menu" : "x");

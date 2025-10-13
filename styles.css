@@ -1792,10 +1792,6 @@ textarea {
   margin-top: 16px;
 }
 
-.hidden {
-  display: none !important;
-}
-
 /* ========= Animação ========= */
 @keyframes fadeInUp {
   from {
