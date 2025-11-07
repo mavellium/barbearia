@@ -39,6 +39,7 @@
       msg.style.display = "none";
     }, 5000);
   }
+  
   async function carregarAgendamentos(userId) {
     try {
       const res = await fetch(API_URL);
