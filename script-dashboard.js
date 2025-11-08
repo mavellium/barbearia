@@ -183,6 +183,135 @@ async function criarAgendamento(e, userId) {
     carregarAgendamentos(userId);
   } catch (err) {
     console.error("Erro ao criar agendamento:", err);
+    carregarServicos();
+    carregarCompras();
+
+    const form = document.getElementById("schedule-form");
+    form.addEventListener("submit", (e) => criarAgendamento(e, userId));
+  }
+  
+  function mostrarMensagem(texto, erro = false) {
+    const msg = document.getElementById("mensagem");
+    msg.innerHTML = texto;
+    msg.className = erro ? "mensagem erro" : "mensagem";
+    msg.style.display = "block";
+
+    setTimeout(() => {
+      msg.style.display = "none";
+    }, 5000);
+  }
+  
+  async function carregarAgendamentos(userId) {
+    try {
+      const res = await fetch(API_URL);
+      let agendamentos = await res.json();
+      agendamentos = agendamentos.filter(ag => ag.userId === userId);
+
+      const tbody = document.querySelector("#appointments-table tbody");
+      tbody.innerHTML = "";
+
+      let cancelados = [];
+
+      agendamentos.forEach(ag => {
+        const row = document.createElement("tr");
+
+        const servicos = ag.servicos?.map(s => s.servico?.nome || "Serviço").join(", ") || "—";
+        const dataFormatada = new Date(ag.dataAgendamento).toLocaleString("pt-BR");
+
+        row.innerHTML = `
+          <td>${servicos}</td>
+          <td>${dataFormatada}</td>
+          <td>${ag.status}</td>
+          <td>
+            <button class="action-btn edit-btn" onclick="remarcarAgendamento('${ag.id}')">Editar</button>
+            <button class="action-btn delete-btn" onclick="cancelarAgendamento('${ag.id}')">Cancelar</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+
+        // Se estiver cancelado, guarda no array
+        if (ag.status?.toUpperCase() === "CANCELADO") {
+          cancelados.push({ servicos, data: dataFormatada });
+        }
+      });
+
+      // Se houver cancelados, exibe mensagem
+      if (cancelados.length > 0) {
+        let mensagemTexto = "⚠️ Os seguintes agendamentos foram cancelados:<br>";
+        cancelados.forEach(c => {
+          mensagemTexto += `• ${c.servicos} — ${c.data}<br>`;
+        });
+        mostrarMensagem(mensagemTexto, true);
+      }
+    } catch (err) {
+      console.error("Erro ao carregar agendamentos:", err);
+      mostrarMensagem("Erro ao carregar agendamentos.", true);
+    }
+  }
+  
+
+  async function carregarServicos() {
+    try {
+      const res = await fetch("https://lipes-cortes.vercel.app/api/servicos");
+      const servicos = await res.json();
+      const container = document.getElementById("service-checkboxes");
+      container.innerHTML = "";
+
+      servicos.forEach(s => {
+        const label = document.createElement("label");
+        label.className = "checkbox-container";
+
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.name = "service-checkbox";
+        input.value = s.id;
+
+        const custom = document.createElement("span");
+        custom.className = "custom-checkbox";
+
+        label.appendChild(input);
+        label.appendChild(custom);
+        label.append(` ${s.nome} - R$${s.preco.toFixed(2)}`);
+
+        container.appendChild(label);
+      });
+    } catch (err) {
+      console.error("Erro ao carregar serviços:", err);
+    }
+  }
+
+  async function criarAgendamento(e, userId) {
+    e.preventDefault();
+    const checkboxes = document.querySelectorAll('input[name="service-checkbox"]:checked');
+    const servicoIds = Array.from(checkboxes).map(cb => cb.value);
+    const data = document.getElementById("appointment-date").value;
+
+    if (!servicoIds.length) {
+      alert("Selecione pelo menos um serviço.");
+      return;
+    }
+
+    const novoAgendamento = { userId, dataAgendamento: data, servicoIds };
+
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(novoAgendamento),
+      });
+
+      if (!res.ok) {
+        const erro = await res.json();
+        alert("Erro: " + erro.error);
+        return;
+      }
+
+      alert("Agendamento criado com sucesso!");
+      document.getElementById("schedule-form").reset();
+      carregarAgendamentos(userId);
+    } catch (err) {
+      console.error("Erro ao criar agendamento:", err);
+    }
   }
 }
 
